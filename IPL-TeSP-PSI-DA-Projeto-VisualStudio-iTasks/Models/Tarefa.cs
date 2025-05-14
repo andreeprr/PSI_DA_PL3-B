@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iTasks.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,8 @@ namespace iTasks
     internal class Tarefa
     {
         public int id { get; set; }
-        public int idGestor { get; set; }
-        public int idProgramador { get; set; }
+        public Gestor gestor { get; set; }
+        public Programador programador{ get; set; }
         public int ordemExecucao { get; set; }
         public string descricao { get; set; }
         public DateTime dataPrevistaInicio { get; set; }

@@ -56,3 +56,4 @@ nunit-*.xml
 /IPL-TeSP-PSI-DA-Projeto-VisualStudio-iTasks/.vs/iTasks
 
 .vs/
+/obj

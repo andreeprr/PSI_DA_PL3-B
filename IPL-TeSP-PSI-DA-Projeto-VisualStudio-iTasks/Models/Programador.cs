@@ -8,7 +8,7 @@ namespace iTasks.Models
 {
     internal class Programador : Utilizador
     {
-        public int idGestor { get; set; }
+        public Gestor gestor { get; set; }
         public int NivelExperiencia { get; set; }
     }
 }
