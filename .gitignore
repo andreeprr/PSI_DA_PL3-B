@@ -52,5 +52,7 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+/.vs
+/IPL-TeSP-PSI-DA-Projeto-VisualStudio-iTasks/.vs/iTasks
 
 .vs/
