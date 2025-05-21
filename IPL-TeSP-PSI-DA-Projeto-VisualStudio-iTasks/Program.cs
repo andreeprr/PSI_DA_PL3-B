@@ -26,22 +26,24 @@ namespace iTasks
                         nome = "João",
                         username = "joao123",
                         password = "password123",
-                        NivelExperiencia = NivelExperiencia.Junior
+                        NivelExperiencia = NivelExperiencia.Junior,
+                        gestor = db.Gestores.FirstOrDefault(gest => gest.username == "manuel123") // Atribuir o gestor existente
 
                     };
                     db.Programadores.Add(programador);
                 }
-                if (db.Utilizadores.FirstOrDefault(gest => gest.username == "Manuel") == null)
-                {
-                    var gestor = new Gestor
-                    {
-                        nome = "Manuel",
-                        username = "manuel123",
-                        password = "password456",
-                        departamento = Departamento.IT
-                    };
-                    db.Gestores.Add(gestor);
-                }
+                //if (db.Utilizadores.FirstOrDefault(gest => gest.username == "Manuel") == null)
+                //{
+                //    var gestor = new Gestor
+                //    {
+                //        nome = "Manuel",
+                //        username = "manuel123",
+                //        password = "password456",
+                //        departamento = Departamento.IT,
+                //        GereUtilizadores = true // Definir como true pois o gestor é responsável por outros
+                //    };
+                //    db.Gestores.Add(gestor);
+                //}
                 db.SaveChanges();
             }
 
