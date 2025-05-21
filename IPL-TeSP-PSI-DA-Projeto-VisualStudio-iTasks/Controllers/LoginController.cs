@@ -21,6 +21,8 @@ namespace iTasks.Controllers
                     // Login bem-sucedido
                     MessageBox.Show("Login bem-sucedido!");
                     // Aqui você pode abrir o formulário principal ou fazer outra ação
+                    frmKanban kanban = new frmKanban();
+                    kanban.Show();
                 }
                 else
                 {

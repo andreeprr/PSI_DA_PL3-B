@@ -16,6 +16,7 @@ namespace iTasks
         public frmLogin()
         {
             InitializeComponent();
+            this.AcceptButton = btLogin; // Define o botão de login como o botão padrão
         }
 
         private void frmLogin_Load(object sender, EventArgs e)
@@ -28,6 +29,8 @@ namespace iTasks
             string username = txtUsername.Text;
             string password = txtPassword.Text;
             LoginController controller = new LoginController(username, password);
+            this.Hide();
+
         }
     }
 }
