@@ -16,5 +16,22 @@ namespace iTasks
         {
             InitializeComponent();
         }
+
+        private void btFechar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btGravar_Click(object sender, EventArgs e)
+        {
+            string descricao = txtDesc.Text;
+            string programador = cbProgramador.SelectedItem.ToString();
+            string ordem = txtOrdem.Text;
+            int storyPoints = int.Parse(txtStoryPoints.Text);
+            DateTime dataInicio = dtInicio.Value;
+            DateTime dataFim = dtFim.Value;
+
+
+        }
     }
 }

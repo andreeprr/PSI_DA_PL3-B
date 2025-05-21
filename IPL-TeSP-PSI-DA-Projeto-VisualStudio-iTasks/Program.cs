@@ -19,7 +19,7 @@ namespace iTasks
             using (var db = new iTasksContext())
             {
 
-                if (db.Utilizadores.FirstOrDefault(prog => prog.username == "João") == null)
+                if (db.Utilizadores.FirstOrDefault(prog => prog.username == "joao123") == null)
                 {
                     var programador = new Programador
                     {
@@ -32,18 +32,18 @@ namespace iTasks
                     };
                     db.Programadores.Add(programador);
                 }
-                //if (db.Utilizadores.FirstOrDefault(gest => gest.username == "Manuel") == null)
-                //{
-                //    var gestor = new Gestor
-                //    {
-                //        nome = "Manuel",
-                //        username = "manuel123",
-                //        password = "password456",
-                //        departamento = Departamento.IT,
-                //        GereUtilizadores = true // Definir como true pois o gestor é responsável por outros
-                //    };
-                //    db.Gestores.Add(gestor);
-                //}
+                if (db.Utilizadores.FirstOrDefault(gest => gest.username == "manuel123") == null)
+                {
+                    var gestor = new Gestor
+                    {
+                        nome = "Manuel",
+                        username = "manuel123",
+                        password = "password456",
+                        departamento = Departamento.IT,
+                        GereUtilizadores = true // Definir como true pois o gestor é responsável por outros
+                    };
+                    db.Gestores.Add(gestor);
+                }
                 db.SaveChanges();
             }
 

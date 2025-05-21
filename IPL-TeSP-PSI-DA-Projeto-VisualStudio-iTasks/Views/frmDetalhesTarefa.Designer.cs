@@ -220,9 +220,9 @@
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(23, 71);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(103, 13);
+            this.label10.Size = new System.Drawing.Size(92, 13);
             this.label10.TabIndex = 22;
-            this.label10.Text = "Data Real de Início:";
+            this.label10.Text = "Data Real de Fim:";
             // 
             // txtDataCriacao
             // 
@@ -265,6 +265,7 @@
             this.btGravar.TabIndex = 28;
             this.btGravar.Text = "Gravar Dados";
             this.btGravar.UseVisualStyleBackColor = true;
+            this.btGravar.Click += new System.EventHandler(this.btGravar_Click);
             // 
             // btFechar
             // 
@@ -274,6 +275,7 @@
             this.btFechar.TabIndex = 29;
             this.btFechar.Text = "Fechar";
             this.btFechar.UseVisualStyleBackColor = true;
+            this.btFechar.Click += new System.EventHandler(this.btFechar_Click);
             // 
             // txtStoryPoints
             // 
