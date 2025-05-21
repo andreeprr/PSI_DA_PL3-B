@@ -58,3 +58,4 @@ nunit-*.xml
 .vs/
 */obj/
 #/IPL-TeSP-PSI-DA-Projeto-VisualStudio-iTasks/obj/Debug/iTasks.csproj.AssemblyReference.cache
+/IPL-TeSP-PSI-DA-Projeto-VisualStudio-iTasks/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
