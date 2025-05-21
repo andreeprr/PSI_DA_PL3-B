@@ -179,13 +179,13 @@
             // tarefasTerminadasToolStripMenuItem
             // 
             this.tarefasTerminadasToolStripMenuItem.Name = "tarefasTerminadasToolStripMenuItem";
-            this.tarefasTerminadasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.tarefasTerminadasToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.tarefasTerminadasToolStripMenuItem.Text = "Tarefas Concluídas";
             // 
             // tarefasEmCursoToolStripMenuItem
             // 
             this.tarefasEmCursoToolStripMenuItem.Name = "tarefasEmCursoToolStripMenuItem";
-            this.tarefasEmCursoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.tarefasEmCursoToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.tarefasEmCursoToolStripMenuItem.Text = "Tarefas em Curso";
             // 
             // btSetDoing
@@ -232,6 +232,7 @@
             this.label1.Size = new System.Drawing.Size(149, 13);
             this.label1.TabIndex = 9;
             this.label1.Text = "Bem vindo: <Nome Utilizador>";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // btPrevisao
             // 
@@ -260,6 +261,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "frmKanban";
             this.Text = "frmKanban";
+            this.Load += new System.EventHandler(this.frmKanban_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);

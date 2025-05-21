@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace iTasks
 {
-    internal class Tarefa
+    public class Tarefa
     {
         public int id { get; set; }
         public Gestor gestor { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace iTasks.Models
 {
-    internal class Gestor : Utilizador
+    public class Gestor : Utilizador
     {
         public Departamento departamento { get; set; }
         public bool GereUtilizadores { get; set; }

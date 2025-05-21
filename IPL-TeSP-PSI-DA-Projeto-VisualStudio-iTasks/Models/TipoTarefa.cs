@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace iTasks
 {
-    internal class TipoTarefa
+    public class TipoTarefa
     {
         public int id { get; set; }
         public string nome { get; set; }

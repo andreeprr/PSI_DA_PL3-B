@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace iTasks.Models
 {
-    internal class Utilizador 
+    public class Utilizador 
     {
         public int id { get; set; }
         public string nome { get; set; }

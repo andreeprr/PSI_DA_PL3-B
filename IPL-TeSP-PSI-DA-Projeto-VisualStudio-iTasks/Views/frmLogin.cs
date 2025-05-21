@@ -1,4 +1,5 @@
 ﻿using iTasks.Controllers;
+using iTasks.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,8 +29,16 @@ namespace iTasks
         {
             string username = txtUsername.Text;
             string password = txtPassword.Text;
-            LoginController controller = new LoginController(username, password);
+            Utilizador utilizador = LoginController.Login(username, password);
+            if(utilizador == null)
+            {
+                MessageBox.Show("Nome de utilizador ou palavra-passe incorretos.");
+                return;
+            }
+            frmKanban kanban = new frmKanban(utilizador);
             this.Hide();
+            kanban.ShowDialog();
+            this.Close();
 
         }
     }

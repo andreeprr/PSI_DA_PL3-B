@@ -8,7 +8,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace iTasks.Models
 {
-    internal class iTasksContext : DbContext
+    public class iTasksContext : DbContext
     {
         public DbSet<TipoTarefa> TipoTarefas { get; set; }
         public DbSet<Tarefa> Tarefas { get; set; }
