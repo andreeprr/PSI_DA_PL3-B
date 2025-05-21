@@ -60,6 +60,7 @@
     <Compile Include="Controllers\TarefasController.cs" />
     <Compile Include="Controllers\UtilizadoresController.cs" />
     <Compile Include="Models\Gestor.cs" />
+    <Compile Include="Models\iTasksContext.cs" />
     <Compile Include="Models\Programador.cs" />
     <Compile Include="Models\Utilizador.cs" />
     <Compile Include="Views\frmConsultarTarefasConcluidas.cs">

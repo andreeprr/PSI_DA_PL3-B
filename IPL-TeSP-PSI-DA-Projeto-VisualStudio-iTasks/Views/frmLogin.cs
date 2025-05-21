@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iTasks.Controllers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,6 +27,7 @@ namespace iTasks
         {
             string username = txtUsername.Text;
             string password = txtPassword.Text;
+            LoginController controller = new LoginController(username, password);
         }
     }
 }

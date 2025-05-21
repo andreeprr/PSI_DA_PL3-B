@@ -8,8 +8,14 @@ namespace iTasks.Models
 {
     internal class Gestor : Utilizador
     {
-        public string departamento { get; set; }
+        public Departamento departamento { get; set; }
         public bool GereUtilizadores { get; set; }
 
+    }
+    public enum Departamento
+    {
+        IT,
+        Marketing,
+        Administração
     }
 }

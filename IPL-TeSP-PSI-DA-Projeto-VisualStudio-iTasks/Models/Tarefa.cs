@@ -11,7 +11,7 @@ namespace iTasks
     {
         public int id { get; set; }
         public Gestor gestor { get; set; }
-        public Programador programador{ get; set; }
+        public Programador programador { get; set; }
         public int ordemExecucao { get; set; }
         public string descricao { get; set; }
         public DateTime dataPrevistaInicio { get; set; }
@@ -19,9 +19,15 @@ namespace iTasks
         public TipoTarefa tipoTarefa { get; set; }
         public int storyPoints { get; set; }
         public DateTime dataRealInicio { get; set; }
-        public DateTime dataRealFim { get; set; }  
+        public DateTime dataRealFim { get; set; }
         public DateTime dataCriacao { get; set; }
-        public string estadoAtual { get; set; }
+        public EstadoTarefa estadoAtual { get; set; }
 
+    }
+    public enum EstadoTarefa
+    {
+        ToDo,
+        Doing,
+        Done
     }
 }
