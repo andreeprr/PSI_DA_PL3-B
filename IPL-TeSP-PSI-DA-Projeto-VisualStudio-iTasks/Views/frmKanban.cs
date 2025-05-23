@@ -41,7 +41,7 @@ namespace iTasks
             }
             else
             {
-                frmDetalhesTarefa novaTarefa = new frmDetalhesTarefa();
+                frmDetalhesTarefa novaTarefa = new frmDetalhesTarefa(utilizadorAutenticado);
                 novaTarefa.ShowDialog();
             }
         }
@@ -100,6 +100,23 @@ namespace iTasks
         private void sairToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void btPrevisao_Click(object sender, EventArgs e)
+        {
+            int index = lstDoing.SelectedIndex;
+            if (index == -1) 
+            {
+                MessageBox.Show("Selecione uma tarefa para ver a previsão.",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            else
+            {
+                string tarefa = lstDoing.Items[index].ToString();
+                // Aqui deve-se calcular a previsão com base na tarefa selecionada
+                // e mostrar a previsão em uma nova janela ou mensagem.
+            }
         }
     }
 }

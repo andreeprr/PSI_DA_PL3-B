@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iTasks.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,10 @@ namespace iTasks
 {
     public partial class frmDetalhesTarefa : Form
     {
-        public frmDetalhesTarefa()
+        public frmDetalhesTarefa(Utilizador utilizador)
         {
             InitializeComponent();
+            txtId.Text = utilizador.id.ToString();
         }
 
         private void btFechar_Click(object sender, EventArgs e)
@@ -25,6 +27,7 @@ namespace iTasks
         private void btGravar_Click(object sender, EventArgs e)
         {
             string descricao = txtDesc.Text;
+            string tipoTarefa = cbTipoTarefa.SelectedItem.ToString();
             string programador = cbProgramador.SelectedItem.ToString();
             string ordem = txtOrdem.Text;
             int storyPoints = int.Parse(txtStoryPoints.Text);
