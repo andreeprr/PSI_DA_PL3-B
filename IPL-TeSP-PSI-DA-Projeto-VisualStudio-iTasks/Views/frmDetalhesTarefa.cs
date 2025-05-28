@@ -20,9 +20,9 @@ namespace iTasks
             if (tarefa != null) 
             {
                 txtEstado.Text = tarefa.estadoAtual.ToString();
-                txtDataRealini.Text = tarefa.dataRealInicio.ToString("dd/MM/yyyy");
-                txtdataRealFim.Text = tarefa.dataRealFim.ToString("dd/MM/yyyy");
-                txtDataCriacao.Text = tarefa.dataCriacao.ToString("dd/MM/yyyy");
+                txtDataRealini.Text = tarefa.dataRealInicio.ToString("dd/MM/yyyy HH:mm:ss");
+                txtdataRealFim.Text = tarefa.dataRealFim.ToString("dd/MM/yyyy HH:mm:ss");
+                txtDataCriacao.Text = tarefa.dataCriacao.ToString("dd/MM/yyyy HH:mm:ss");
             }
             else
             {
@@ -45,10 +45,11 @@ namespace iTasks
             tarefa.descricao = txtDesc.Text;
             tarefa.tipoTarefa = (TipoTarefa)cbTipoTarefa.SelectedItem;
             tarefa.programador = (Programador)cbProgramador.SelectedItem;
-            string ordem = txtOrdem.Text;
-            int storyPoints = int.Parse(txtStoryPoints.Text);
-            DateTime dataInicio = dtInicio.Value;
-            DateTime dataFim = dtFim.Value;
+            tarefa.ordemExecucao = int.Parse(txtOrdem.Text);
+            tarefa.storyPoints= int.Parse(txtStoryPoints.Text);
+            tarefa.dataPrevistaInicio = dtInicio.Value;
+            tarefa.dataPrevistaFim = dtFim.Value;
+
 
 
         }

@@ -1,4 +1,5 @@
-﻿using iTasks.Models;
+﻿using iTasks.Controllers;
+using iTasks.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,6 +21,7 @@ namespace iTasks
             InitializeComponent();
             string nome = utilizador.nome;
             label1.Text = $"Bem vindo {nome}!";
+            List<Tarefa> tarefas = TarefasController.ObterTarefasPorUtilizador(utilizadorAutenticado);
         }
 
         private void frmKanban_Load(object sender, EventArgs e)
