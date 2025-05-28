@@ -328,6 +328,7 @@
             this.Controls.Add(this.label1);
             this.Name = "frmDetalhesTarefa";
             this.Text = "frmDetalhesTarefa";
+            this.Load += new System.EventHandler(this.frmDetalhesTarefa_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

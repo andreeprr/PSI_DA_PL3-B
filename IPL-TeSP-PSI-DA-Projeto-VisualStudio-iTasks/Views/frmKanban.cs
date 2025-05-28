@@ -18,8 +18,8 @@ namespace iTasks
         {
             utilizadorAutenticado = utilizador;
             InitializeComponent();
-            string username = utilizador.username;
-            label1.Text = $"Bem vindo {username}";
+            string nome = utilizador.nome;
+            label1.Text = $"Bem vindo {nome}!";
         }
 
         private void frmKanban_Load(object sender, EventArgs e)
@@ -34,6 +34,7 @@ namespace iTasks
 
         private void btNova_Click(object sender, EventArgs e)
         {
+            Tarefa tarefa = null;
             if (utilizadorAutenticado is Programador)
             {
                 MessageBox.Show("Só um gestor pode criar uma nova tarefa.",
@@ -41,7 +42,7 @@ namespace iTasks
             }
             else
             {
-                frmDetalhesTarefa novaTarefa = new frmDetalhesTarefa(utilizadorAutenticado);
+                frmDetalhesTarefa novaTarefa = new frmDetalhesTarefa(utilizadorAutenticado, tarefa);
                 novaTarefa.ShowDialog();
             }
         }
