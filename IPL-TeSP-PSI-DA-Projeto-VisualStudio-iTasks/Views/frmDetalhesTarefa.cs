@@ -25,7 +25,7 @@ namespace iTasks
             {
                txtEstado.Text = EstadoTarefa.ToDo.ToString();
             }
-            txtDataRealini.Text
+            //txtDataRealini.Text
         }
 
         private void btFechar_Click(object sender, EventArgs e)

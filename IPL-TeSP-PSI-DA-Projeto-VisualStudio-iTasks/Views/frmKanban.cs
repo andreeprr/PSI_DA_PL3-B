@@ -119,5 +119,45 @@ namespace iTasks
                 // e mostrar a previsão em uma nova janela ou mensagem.
             }
         }
+
+        private void gerirUtilizadoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (utilizadorAutenticado is Programador)
+            {
+                MessageBox.Show("Só um gestor pode gerir utilizadores.",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                frmGereUtilizadores gereUtilizadores = new frmGereUtilizadores();
+                gereUtilizadores.ShowDialog();
+            }
+        }
+
+        private void gerirTiposDeTarefasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (utilizadorAutenticado is Programador)
+            {
+                MessageBox.Show("Só um gestor pode gerir tarefas.",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                frmGereTiposTarefas gereTarefas = new frmGereTiposTarefas();
+                gereTarefas.ShowDialog();
+            }
+        }
+
+        private void tarefasTerminadasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmConsultarTarefasConcluidas verTarefasConcluidas = new frmConsultarTarefasConcluidas();
+            verTarefasConcluidas.ShowDialog();
+        }
+
+        private void tarefasEmCursoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmConsultaTarefasEmCurso verTarefasEmCurso = new frmConsultaTarefasEmCurso();
+            verTarefasEmCurso.ShowDialog();
+        }
     }
 }
