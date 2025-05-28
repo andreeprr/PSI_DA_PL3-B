@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using iTasks.Models;
 
 namespace iTasks.Controllers
@@ -15,6 +16,23 @@ namespace iTasks.Controllers
             using (var db = new iTasksContext())
             {
                 return db.Tarefas.Where(tarefa => tarefa.programador.id == utilizador.id).ToList();
+            }
+        }
+        public static bool AdicionarTarefa(Tarefa tarefa)
+        {
+            try
+            {
+                using (var db = new iTasksContext())
+                { 
+                    db.Tarefas.Add(tarefa);
+                    db.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao adicionar tarefa: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
     }
