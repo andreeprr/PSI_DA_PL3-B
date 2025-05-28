@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\TarefasController.cs" />
+    <Compile Include="Controllers\TipotarefaController.cs" />
     <Compile Include="Controllers\UtilizadoresController.cs" />
     <Compile Include="Models\Gestor.cs" />
     <Compile Include="Models\iTasksContext.cs" />
