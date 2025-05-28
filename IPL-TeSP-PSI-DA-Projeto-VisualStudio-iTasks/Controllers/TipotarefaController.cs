@@ -10,6 +10,8 @@ namespace iTasks.Controllers
 {
     internal class TipotarefaController
     {
+
+        //adiciona um tipo de tarefa à base de dados
         public static bool AdicionarTipoTarefa(TipoTarefa tipoTarefa)
         {
             try
@@ -26,8 +28,14 @@ namespace iTasks.Controllers
                     "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-
-            
+        }
+        //vai buscar a lista de tipos de tarefas na base de dados
+        public static List<TipoTarefa> ObterTiposTarefas()
+        {
+            using (var db = new iTasksContext())
+            {
+                return db.TipoTarefas.ToList();
+            }
         }
     }
 }
