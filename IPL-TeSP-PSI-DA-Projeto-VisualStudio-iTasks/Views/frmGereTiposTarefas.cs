@@ -42,6 +42,9 @@ namespace iTasks
 
             //atualizar lista com a base de dados
 
+            List<TipoTarefa> tiposTarefas = TipotarefaController.ObterTiposTarefas(); //obter a lista de tipos de tarefas da base de dados
+            lstLista.DataSource = null; //limpar a lista
+            lstLista.DataSource = tiposTarefas; //atualizar a lista com a nova lista de tipos de tarefas
         }
     }
 }
