@@ -25,5 +25,21 @@ namespace iTasks.Controllers
                 return false;
             }
         }
+        public static bool AdicionarProgramador(Programador programador)
+        {
+            try
+            {
+                using (var db = new iTasksContext())
+                {
+                    db.Programadores.Add(programador);
+                    db.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

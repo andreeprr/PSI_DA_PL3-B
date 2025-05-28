@@ -22,9 +22,7 @@ namespace iTasks.Controllers
             }
             catch (Exception ex) {
                 return false;
-            }
-
-            
+            } 
         }
     }
 }
