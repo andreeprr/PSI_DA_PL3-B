@@ -13,10 +13,19 @@ namespace iTasks
 {
     public partial class frmDetalhesTarefa : Form
     {
-        public frmDetalhesTarefa(Utilizador utilizador)
+        public frmDetalhesTarefa(Utilizador utilizador, Tarefa tarefa)
         {
             InitializeComponent();
             txtId.Text = utilizador.id.ToString();
+            if (tarefa != null) 
+            {
+                txtEstado.Text = tarefa.estadoAtual.ToString();
+            }
+            else
+            {
+               txtEstado.Text = EstadoTarefa.ToDo.ToString();
+            }
+            //txtDataRealini.Text
         }
 
         private void btFechar_Click(object sender, EventArgs e)
@@ -34,6 +43,11 @@ namespace iTasks
             DateTime dataInicio = dtInicio.Value;
             DateTime dataFim = dtFim.Value;
 
+
+        }
+
+        private void frmDetalhesTarefa_Load(object sender, EventArgs e)
+        {
 
         }
     }

@@ -161,12 +161,14 @@
             this.gerirUtilizadoresToolStripMenuItem.Name = "gerirUtilizadoresToolStripMenuItem";
             this.gerirUtilizadoresToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.gerirUtilizadoresToolStripMenuItem.Text = "Gerir Utilizadores";
+            this.gerirUtilizadoresToolStripMenuItem.Click += new System.EventHandler(this.gerirUtilizadoresToolStripMenuItem_Click);
             // 
             // gerirTiposDeTarefasToolStripMenuItem
             // 
             this.gerirTiposDeTarefasToolStripMenuItem.Name = "gerirTiposDeTarefasToolStripMenuItem";
             this.gerirTiposDeTarefasToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.gerirTiposDeTarefasToolStripMenuItem.Text = "Gerir Tipos de Tarefas";
+            this.gerirTiposDeTarefasToolStripMenuItem.Click += new System.EventHandler(this.gerirTiposDeTarefasToolStripMenuItem_Click);
             // 
             // listagensToolStripMenuItem
             // 
@@ -180,14 +182,16 @@
             // tarefasTerminadasToolStripMenuItem
             // 
             this.tarefasTerminadasToolStripMenuItem.Name = "tarefasTerminadasToolStripMenuItem";
-            this.tarefasTerminadasToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.tarefasTerminadasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.tarefasTerminadasToolStripMenuItem.Text = "Tarefas Concluídas";
+            this.tarefasTerminadasToolStripMenuItem.Click += new System.EventHandler(this.tarefasTerminadasToolStripMenuItem_Click);
             // 
             // tarefasEmCursoToolStripMenuItem
             // 
             this.tarefasEmCursoToolStripMenuItem.Name = "tarefasEmCursoToolStripMenuItem";
-            this.tarefasEmCursoToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.tarefasEmCursoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.tarefasEmCursoToolStripMenuItem.Text = "Tarefas em Curso";
+            this.tarefasEmCursoToolStripMenuItem.Click += new System.EventHandler(this.tarefasEmCursoToolStripMenuItem_Click);
             // 
             // btSetDoing
             // 

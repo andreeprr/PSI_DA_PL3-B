@@ -18,8 +18,8 @@ namespace iTasks
         {
             utilizadorAutenticado = utilizador;
             InitializeComponent();
-            string username = utilizador.username;
-            label1.Text = $"Bem vindo {username}";
+            string nome = utilizador.nome;
+            label1.Text = $"Bem vindo {nome}!";
         }
 
         private void frmKanban_Load(object sender, EventArgs e)
@@ -34,6 +34,7 @@ namespace iTasks
 
         private void btNova_Click(object sender, EventArgs e)
         {
+            Tarefa tarefa = null;
             if (utilizadorAutenticado is Programador)
             {
                 MessageBox.Show("Só um gestor pode criar uma nova tarefa.",
@@ -41,7 +42,7 @@ namespace iTasks
             }
             else
             {
-                frmDetalhesTarefa novaTarefa = new frmDetalhesTarefa(utilizadorAutenticado);
+                frmDetalhesTarefa novaTarefa = new frmDetalhesTarefa(utilizadorAutenticado, tarefa);
                 novaTarefa.ShowDialog();
             }
         }
@@ -117,6 +118,46 @@ namespace iTasks
                 // Aqui deve-se calcular a previsão com base na tarefa selecionada
                 // e mostrar a previsão em uma nova janela ou mensagem.
             }
+        }
+
+        private void gerirUtilizadoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (utilizadorAutenticado is Programador)
+            {
+                MessageBox.Show("Só um gestor pode gerir utilizadores.",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                frmGereUtilizadores gereUtilizadores = new frmGereUtilizadores();
+                gereUtilizadores.ShowDialog();
+            }
+        }
+
+        private void gerirTiposDeTarefasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (utilizadorAutenticado is Programador)
+            {
+                MessageBox.Show("Só um gestor pode gerir tarefas.",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                frmGereTiposTarefas gereTarefas = new frmGereTiposTarefas();
+                gereTarefas.ShowDialog();
+            }
+        }
+
+        private void tarefasTerminadasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmConsultarTarefasConcluidas verTarefasConcluidas = new frmConsultarTarefasConcluidas();
+            verTarefasConcluidas.ShowDialog();
+        }
+
+        private void tarefasEmCursoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmConsultaTarefasEmCurso verTarefasEmCurso = new frmConsultaTarefasEmCurso();
+            verTarefasEmCurso.ShowDialog();
         }
     }
 }
