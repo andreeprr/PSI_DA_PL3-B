@@ -25,24 +25,26 @@ namespace iTasks
 
         private void btGravarGestor_Click(object sender, EventArgs e)
         {
-            string nome = txtNomeGestor.Text;
-            if (nome == "")
+
+            if (txtNomeGestor.Text == "" || txtUsernameGestor.Text == "" || txtPasswordGestor.Text == "" || cbDepartamento.SelectedItem == null)
             {
                 MessageBox.Show("Nome não pode estar vazio");
                 return;
             }
-            
+
+            var gestor = new Gestor
+            {
+                nome = txtNomeGestor.Text,
+                username = txtUsernameGestor.Text,
+                password = txtPasswordGestor.Text,
+                departamento = (Departamento)cbDepartamento.SelectedItem,
+                GereUtilizadores = chkGereUtilizadores.Checked
+            };
         }
 
         private void btGravarProg_Click(object sender, EventArgs e)
         {
-            string nome = txtNomeProg.Text;
-            if (nome == "")
-            {
-                MessageBox.Show("Nome não pode estar vazio");
-                return;
-            }
-            
+
         }
     }
 }
