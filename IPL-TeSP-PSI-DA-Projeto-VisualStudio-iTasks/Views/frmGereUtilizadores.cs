@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iTasks.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,33 @@ namespace iTasks
         public frmGereUtilizadores()
         {
             InitializeComponent();
+        }
+
+        private void lstListaGestores_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btGravarGestor_Click(object sender, EventArgs e)
+        {
+            string nome = txtNomeGestor.Text;
+            if (nome == "")
+            {
+                MessageBox.Show("Nome não pode estar vazio");
+                return;
+            }
+            
+        }
+
+        private void btGravarProg_Click(object sender, EventArgs e)
+        {
+            string nome = txtNomeProg.Text;
+            if (nome == "")
+            {
+                MessageBox.Show("Nome não pode estar vazio");
+                return;
+            }
+            
         }
     }
 }
