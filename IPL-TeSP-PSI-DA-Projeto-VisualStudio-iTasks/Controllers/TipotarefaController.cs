@@ -29,6 +29,7 @@ namespace iTasks.Controllers
                 return false;
             }
         }
+
         //vai buscar a lista de tipos de tarefas na base de dados
         public static List<TipoTarefa> ObterTiposTarefas()
         {

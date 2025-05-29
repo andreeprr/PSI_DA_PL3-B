@@ -32,6 +32,7 @@ namespace iTasks
                 txtdataRealFim.Text = "";
                 txtDataCriacao.Text = "";
             }
+
             
         }
 
@@ -75,7 +76,10 @@ namespace iTasks
 
         private void frmDetalhesTarefa_Load(object sender, EventArgs e)
         {
-
+            var tiposTarefas = TipotarefaController.ObterTiposTarefas();
+            cbTipoTarefa.DataSource = tiposTarefas;
+            cbTipoTarefa.DisplayMember = "nome"; // Exibir o nome do tipo de tarefa
+            cbTipoTarefa.ValueMember = "id"; // Usar o ID como valor
         }
     }
 }

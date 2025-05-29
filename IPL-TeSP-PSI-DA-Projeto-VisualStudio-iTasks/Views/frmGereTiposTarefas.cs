@@ -46,5 +46,10 @@ namespace iTasks
             lstLista.DataSource = null; //limpar a lista
             lstLista.DataSource = tiposTarefas; //atualizar a lista com a nova lista de tipos de tarefas
         }
+
+        private void frmGereTiposTarefas_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
