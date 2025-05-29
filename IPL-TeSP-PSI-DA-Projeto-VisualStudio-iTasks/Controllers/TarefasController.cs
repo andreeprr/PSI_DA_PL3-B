@@ -35,5 +35,12 @@ namespace iTasks.Controllers
                 return false;
             }
         }
+        public static List<Tarefa> ObterTarefas()
+        {
+            using (var db = new iTasksContext())
+            {
+                return db.Tarefas.ToList();
+            }
+        }
     }
 }

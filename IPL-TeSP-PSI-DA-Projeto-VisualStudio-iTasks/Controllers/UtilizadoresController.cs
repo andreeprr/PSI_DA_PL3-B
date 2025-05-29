@@ -41,5 +41,13 @@ namespace iTasks.Controllers
                 return false;
             }
         }
+
+        public static List<Utilizador> ObterProgramadores()
+        {
+            using (var db = new iTasksContext())
+            {
+                return db.Programadores.ToList<Utilizador>();
+            }
+        }
     }
 }

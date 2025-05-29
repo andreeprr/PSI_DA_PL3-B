@@ -26,7 +26,10 @@ namespace iTasks
 
         private void frmKanban_Load(object sender, EventArgs e)
         {
-            
+            // Carregar a lista de tarefas ao iniciar o formulário
+            List<Tarefa> tarefas = TarefasController.ObterTarefas(); //obter a lista de tarefas da base de dados
+            lstTodo.DataSource = null; // Limpar a lista antes de definir a nova fonte de dados
+            lstTodo.DataSource = tarefas;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -161,5 +164,6 @@ namespace iTasks
             frmConsultaTarefasEmCurso verTarefasEmCurso = new frmConsultaTarefasEmCurso();
             verTarefasEmCurso.ShowDialog();
         }
+
     }
 }

@@ -64,6 +64,7 @@ namespace iTasks
             var tarefaCriada = TarefasController.AdicionarTarefa(tarefa);
             if (tarefaCriada== true) 
             {
+
                 MessageBox.Show("Tarefa criada com sucesso","Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
@@ -72,14 +73,19 @@ namespace iTasks
                 MessageBox.Show("Erro! Não foi possível criar a tarefa","Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-        }
 
+        }
         private void frmDetalhesTarefa_Load(object sender, EventArgs e)
         {
             var tiposTarefas = TipotarefaController.ObterTiposTarefas();
             cbTipoTarefa.DataSource = tiposTarefas;
             cbTipoTarefa.DisplayMember = "nome"; // Exibir o nome do tipo de tarefa
             cbTipoTarefa.ValueMember = "id"; // Usar o ID como valor
+
+            var programadores = UtilizadoresController.ObterProgramadores();
+            cbProgramador.DataSource = programadores;
+            cbProgramador.DisplayMember = "nome"; // Exibir o nome do programador
+            cbProgramador.ValueMember = "id"; // Usar o ID como valor
         }
     }
 }
