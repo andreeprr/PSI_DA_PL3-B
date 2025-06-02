@@ -28,8 +28,22 @@ namespace iTasks
         {
             // Carregar a lista de tarefas ao iniciar o formulário
             List<Tarefa> tarefas = TarefasController.ObterTarefas(); //obter a lista de tarefas da base de dados
-            lstTodo.DataSource = null; // Limpar a lista antes de definir a nova fonte de dados
-            lstTodo.DataSource = tarefas;
+
+            var tarefasTodo = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.ToDo).ToList();
+            var tarefasDoing = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Doing).ToList();
+            var tarefasDone = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Done).ToList();
+
+            lstTodo.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
+            lstDoing.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
+            lstDone.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
+
+            lstTodo.DataSource = tarefasTodo; // Definir a fonte de dados para a lista de tarefas "To Do"
+            lstDoing.DataSource = tarefasDoing; // Definir a fonte de dados para a lista de tarefas "Doing"
+            lstDone.DataSource = tarefasDone; // Definir a fonte de dados para a lista de tarefas "Done"
+
+            lstTodo.DisplayMember = "descricao"; // Exibir a descrição da tarefa na lista "To Do"
+            lstDoing.DisplayMember = "descricao"; // Exibir a descrição da tarefa na lista "Doing"
+            lstDone.DisplayMember = "descricao"; // Exibir a descrição da tarefa na lista "Done"
         }
 
         private void label1_Click(object sender, EventArgs e)

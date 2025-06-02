@@ -18,6 +18,14 @@ namespace iTasks.Controllers
                 return db.Tarefas.Where(tarefa => tarefa.programador.id == utilizador.id).ToList();
             }
         }
+
+        public static int tarefasAtivas(Programador programador)
+        {
+            using (var db = new iTasksContext())
+            {
+               return db.Tarefas.Count(t => t.programador.id == programador.id && (t.estadoAtual == EstadoTarefa.ToDo || t.estadoAtual == EstadoTarefa.Doing));
+            }
+        }
         public static bool AdicionarTarefa(Tarefa tarefa)
         {
             try

@@ -49,6 +49,15 @@ namespace iTasks
                 MessageBox.Show("Por favor, preencha todos os campos corretamente.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            int tarefasAtivas = TarefasController.tarefasAtivas((Programador)cbProgramador.SelectedItem);
+
+            if (tarefasAtivas >= 2)
+            {
+                MessageBox.Show("Este programador já tem 2 tarefas atribuídas.", "Limite atingido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Não permite atribuir mais tarefas
+            }
+
             var tarefa = new Tarefa
             {
                 descricao = txtDesc.Text,
