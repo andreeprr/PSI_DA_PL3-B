@@ -26,6 +26,28 @@ namespace iTasks.Controllers
                return db.Tarefas.Count(t => t.programador.id == programador.id && (t.estadoAtual == EstadoTarefa.ToDo || t.estadoAtual == EstadoTarefa.Doing));
             }
         }
+
+        public static bool AtualizarEstadoTarefa(Tarefa tarefa)
+        {
+            try
+            {
+                using (var db = new iTasksContext())
+                {
+                    var tarefaDb = db.Tarefas.FirstOrDefault(t => t.id == tarefa.id);
+                    if (tarefaDb == null)
+                        return false;
+
+                    tarefaDb.estadoAtual = tarefa.estadoAtual;
+                    db.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao atualizar estado da tarefa: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
         public static bool AdicionarTarefa(Tarefa tarefa)
         {
             try

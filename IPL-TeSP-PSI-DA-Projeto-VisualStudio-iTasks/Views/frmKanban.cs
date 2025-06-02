@@ -75,12 +75,17 @@ namespace iTasks
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            else
+            Tarefa tarefaSelecionada = lstTodo.Items[index] as Tarefa;
+            if (tarefaSelecionada == null)
             {
-                string tarefa = lstTodo.Items[index].ToString();
-                lstDoing.Items.Add(tarefa);
-                lstTodo.Items.RemoveAt(index);
+                return;
             }
+
+            tarefaSelecionada.estadoAtual = EstadoTarefa.Doing;
+
+            TarefasController.AtualizarEstadoTarefa(tarefaSelecionada);
+
+            frmKanban_Load(null, null); // Recarregar a lista de tarefas para refletir a mudança de estado
         }
 
         private void btSetTodo_Click(object sender, EventArgs e)
@@ -92,12 +97,20 @@ namespace iTasks
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            else
+            Tarefa tarefaSelecionada = lstDoing.Items[index] as Tarefa;
+            if (tarefaSelecionada == null)
             {
-                string tarefa = lstDoing.Items[index].ToString();
-                lstDoing.Items.RemoveAt(index);
-                lstTodo.Items.Add(tarefa);
+                return;
             }
+            if (tarefaSelecionada.estadoAtual == EstadoTarefa.Done)
+            {
+                MessageBox.Show("Tarefas concluídas não podem ser reiniciadas.",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            tarefaSelecionada.estadoAtual = EstadoTarefa.ToDo;
+            TarefasController.AtualizarEstadoTarefa(tarefaSelecionada);
+            frmKanban_Load(null, null); // Recarregar a lista de tarefas para refletir a mudança de estado
         }
 
         private void btSetDone_Click(object sender, EventArgs e)
@@ -109,12 +122,14 @@ namespace iTasks
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            else
+            Tarefa tarefaSelecionada = lstDoing.Items[index] as Tarefa;
+            if (tarefaSelecionada == null)
             {
-                string tarefa = lstDoing.Items[index].ToString();
-                lstDoing.Items.RemoveAt(index);
-                lstDone.Items.Add(tarefa);
+                return;
             }
+            tarefaSelecionada.estadoAtual = EstadoTarefa.Done;
+            TarefasController.AtualizarEstadoTarefa(tarefaSelecionada);
+            frmKanban_Load(null, null); // Recarregar a lista de tarefas para refletir a mudança de estado
         }
 
         private void sairToolStripMenuItem_Click(object sender, EventArgs e)
