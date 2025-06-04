@@ -26,21 +26,57 @@ namespace iTasks
 
         private void lstListaGestores_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            //Verifica se algum item está selecionado na lista antes de preencher os campos do gestor
+            if (lstListaGestores.SelectedItem != null)
+            {
+                //Campos preenchidos ao selecionar gestor
+                Gestor gestor = (Gestor)lstListaGestores.SelectedItem;
+                txtIdGestor.Text = gestor.id.ToString();
+                txtNomeGestor.Text = gestor.nome;
+                txtUsernameGestor.Text = gestor.username;
+                txtPasswordGestor.Text = gestor.password;
+                cbDepartamento.SelectedItem = gestor.departamento;
+                chkGereUtilizadores.Checked = gestor.GereUtilizadores;
+            }else 
+            {
+                LimparCamposGestor();
+            }
+        }
+
+        private void lstListaProgramadores_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Verifica se algum item está selecionado na lista antes de preencher os campos do gestor
+            if (lstListaProgramadores.SelectedItem != null)
+            {
+                //Campos preenchidos ao selecionar programador
+                Programador programador = (Programador)lstListaProgramadores.SelectedItem;
+                txtIdProg.Text = programador.id.ToString();
+                txtNomeProg.Text = programador.nome;
+                txtUsernameProg.Text = programador.username;
+                txtPasswordProg.Text = programador.password;
+                cbNivelProg.SelectedItem = programador.NivelExperiencia;
+                cbGestorProg.SelectedItem = programador.gestor;
+            }else
+            {
+                LimparCamposProgramador();
+            }
         }
 
         private void btGravarGestor_Click(object sender, EventArgs e)
         {
-            List<Utilizador> gestores = UtilizadoresController.ObterGestores(); //obter a lista de tipos de tarefas da base de dados
+            //Obter a lista de tipos de tarefas da base de dados
+            List<Utilizador> gestores = UtilizadoresController.ObterGestores(); 
             lstListaGestores.DataSource = gestores;
             lstListaGestores.DisplayMember = "nome";
 
+            //Validação simples para garantir que os campos obrigatórios não estejam vazios
             if (txtNomeGestor.Text == "" || txtUsernameGestor.Text == "" || txtPasswordGestor.Text == "" || cbDepartamento.SelectedItem == null)
             {
                 MessageBox.Show("Campo não pode estar vazio");
                 return;
             }
 
+            //Criação do objeto Programador com os dados do formulário
             var gestor = new Gestor
             {
                 nome = txtNomeGestor.Text,
@@ -50,6 +86,7 @@ namespace iTasks
                 GereUtilizadores = chkGereUtilizadores.Checked
             };
 
+            //Indica se o gestor foi adicionado com sucesso (true) ou não (false), por isso usamos o bool
             bool verificaGestor = UtilizadoresController.AdicionarGestor(gestor);
             if (verificaGestor == true)
             {
@@ -66,42 +103,45 @@ namespace iTasks
 
         private void btGravarProg_Click(object sender, EventArgs e)
         {
-            List<Utilizador> programadores = UtilizadoresController.ObterProgramadores(); //obter a lista de tipos de tarefas da base de dados
-            lstListaProgramadores.DataSource = programadores;
-            lstListaProgramadores.DisplayMember = "nome";
+            //Obtém a lista de gestores da base de dados e popula a ListBox
+            List<Utilizador> gestores = UtilizadoresController.ObterGestores();
+            lstListaGestores.DataSource = gestores;
+            lstListaGestores.DisplayMember = "nome";
 
-            if (txtNomeProg.Text == "" || txtUsernameProg.Text == "" || txtPasswordProg.Text == "" || cbNivelProg.SelectedItem == null || cbGestorProg == null)
+            //Validação simples para garantir que os campos obrigatórios não estejam vazios
+            if (txtNomeGestor.Text == "" || txtUsernameGestor.Text == "" || txtPasswordGestor.Text == "" || cbDepartamento.SelectedItem == null)
             {
                 MessageBox.Show("Campo não pode estar vazio");
                 return;
             }
 
-            var programador = new Programador
+            //Criação do objeto Gestor com os dados do formulário
+            var gestor = new Gestor
             {
-                nome = txtNomeProg.Text,
-                username = txtUsernameProg.Text,
-                password = txtPasswordProg.Text,
-                NivelExperiencia = (NivelExperiencia)cbNivelProg.SelectedItem,
-                gestor = (Gestor)cbGestorProg.SelectedItem
+                nome = txtNomeGestor.Text,
+                username = txtUsernameGestor.Text,
+                password = txtPasswordGestor.Text,
+                departamento = (Departamento)cbDepartamento.SelectedItem,
+                GereUtilizadores = chkGereUtilizadores.Checked
             };
 
-            bool verificaProgramador = UtilizadoresController.AdicionarProgramador(programador);
-            if (verificaProgramador == true)
+            //Indica se o gestor foi adicionado com sucesso (true) ou não (false), por isso usamos o bool para verificar o resultado
+            bool verificaGestor = UtilizadoresController.AdicionarGestor(gestor);
+            if (verificaGestor == true)
             {
-                MessageBox.Show("Programador criado com sucesso");
+                MessageBox.Show("Gestor criado com sucesso");
                 return;
             }
             else
             {
-                MessageBox.Show("Erro ! Não foi possível criar o programador");
+                MessageBox.Show("Erro! Não foi possível criar o gestor");
                 return;
             }
-            
         }
 
         private void frmGereUtilizadores_Load(object sender, EventArgs e)
         {
-            // Carregar as listas de gestores e programadores ao iniciar o formulário
+            //Carregar as listas de gestores e programadores ao iniciar o formulário
             List<Utilizador> programadores= UtilizadoresController.ObterProgramadores(); //obter a lista de tipos de tarefas da base de dados
             lstListaProgramadores.DataSource = programadores;
 
@@ -111,6 +151,28 @@ namespace iTasks
 
             //Popular a ComboBox de gestores para programadores
             cbGestorProg.DataSource = gestoresCombobox;
+
+            //Define o índice selecionado da lista como -1 para garantir que nenhum item esteja selecionado ao iniciar o programa
+            lstListaGestores.SelectedIndex = -1;
+            lstListaProgramadores.SelectedIndex = -1;
+        }
+        private void LimparCamposGestor()
+        {
+            txtIdGestor.Text = "";
+            txtNomeGestor.Text = "";
+            txtUsernameGestor.Text = "";
+            txtPasswordGestor.Text = "";
+            cbDepartamento.SelectedIndex = -1;
+            chkGereUtilizadores.Checked = false;
+        }
+        private void LimparCamposProgramador()
+        {
+            txtIdProg.Text = "";
+            txtNomeProg.Text = "";
+            txtUsernameProg.Text = "";
+            txtPasswordProg.Text = "";
+            cbNivelProg.SelectedIndex = -1;
+            cbGestorProg.SelectedIndex = -1;
         }
     }
 }

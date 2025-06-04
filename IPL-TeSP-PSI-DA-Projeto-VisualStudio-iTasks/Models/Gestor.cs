@@ -12,7 +12,7 @@ namespace iTasks.Models
         public bool GereUtilizadores { get; set; }
         public override string ToString()
         {
-            string texto = this.nome + "(" + this.id + ")";
+            string texto = this.nome + " (" + this.id + ")";
             return texto;
         }
 
