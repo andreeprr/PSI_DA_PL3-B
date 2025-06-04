@@ -35,6 +35,8 @@ namespace iTasks.Controllers
             {
                 using (var db = new iTasksContext())
                 {
+                    // Certifica-se de que o gestor está anexado ao programador
+                    db.Gestores.Attach(programador.gestor); 
                     db.Programadores.Add(programador);
                     db.SaveChanges();
                 }

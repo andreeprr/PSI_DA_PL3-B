@@ -64,11 +64,6 @@ namespace iTasks
 
         private void btGravarGestor_Click(object sender, EventArgs e)
         {
-            //Obter a lista de tipos de tarefas da base de dados
-            List<Utilizador> gestores = UtilizadoresController.ObterGestores(); 
-            lstListaGestores.DataSource = gestores;
-            lstListaGestores.DisplayMember = "nome";
-
             //Validação simples para garantir que os campos obrigatórios não estejam vazios
             if (txtNomeGestor.Text == "" || txtUsernameGestor.Text == "" || txtPasswordGestor.Text == "" || cbDepartamento.SelectedItem == null)
             {
@@ -91,6 +86,9 @@ namespace iTasks
             if (verificaGestor == true)
             {
                 MessageBox.Show("Gestor criado com sucesso");
+                //Obtém a lista de gestores da base de dados e popula a ListBox
+                List<Utilizador> gestores = UtilizadoresController.ObterGestores();
+                lstListaGestores.DataSource = gestores;
                 return;
             }
             else
@@ -98,16 +96,11 @@ namespace iTasks
                 MessageBox.Show("Erro ! Não foi possível criar o gestor");
                 return;
             }
-            
+
         }
 
         private void btGravarProg_Click(object sender, EventArgs e)
         {
-            //Obtém a lista de gestores da base de dados e popula a ListBox
-            List<Utilizador> gestores = UtilizadoresController.ObterGestores();
-            lstListaGestores.DataSource = gestores;
-            lstListaGestores.DisplayMember = "nome";
-
             //Validação simples para garantir que os campos obrigatórios não estejam vazios
             if (txtNomeGestor.Text == "" || txtUsernameGestor.Text == "" || txtPasswordGestor.Text == "" || cbDepartamento.SelectedItem == null)
             {
@@ -130,6 +123,9 @@ namespace iTasks
             if (verificaGestor == true)
             {
                 MessageBox.Show("Gestor criado com sucesso");
+                //Obtém a lista de programadores da base de dados e popula a ListBox
+                List<Utilizador> gestores = UtilizadoresController.ObterGestores();
+                lstListaGestores.DataSource = gestores;
                 return;
             }
             else
