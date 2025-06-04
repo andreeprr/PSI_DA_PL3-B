@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace iTasks.Controllers
 {
@@ -22,6 +23,8 @@ namespace iTasks.Controllers
             }
             catch (Exception ex)
             {
+                MessageBox.Show($"Erro ao adicionar gestor: {ex.Message}",
+                    "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
@@ -38,6 +41,8 @@ namespace iTasks.Controllers
             }
             catch (Exception ex)
             {
+                MessageBox.Show($"Erro ao adicionar programador: {ex.Message}",
+                    "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
