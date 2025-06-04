@@ -26,7 +26,24 @@ namespace iTasks
 
         private void frmKanban_Load(object sender, EventArgs e)
         {
-            
+            // Carregar a lista de tarefas ao iniciar o formulário
+            List<Tarefa> tarefas = TarefasController.ObterTarefas(); //obter a lista de tarefas da base de dados
+
+            var tarefasTodo = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.ToDo).ToList();
+            var tarefasDoing = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Doing).ToList();
+            var tarefasDone = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Done).ToList();
+
+            lstTodo.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
+            lstDoing.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
+            lstDone.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
+
+            lstTodo.DataSource = tarefasTodo; // Definir a fonte de dados para a lista de tarefas "To Do"
+            lstDoing.DataSource = tarefasDoing; // Definir a fonte de dados para a lista de tarefas "Doing"
+            lstDone.DataSource = tarefasDone; // Definir a fonte de dados para a lista de tarefas "Done"
+
+            lstTodo.DisplayMember = "descricao"; // Exibir a descrição da tarefa na lista "To Do"
+            lstDoing.DisplayMember = "descricao"; // Exibir a descrição da tarefa na lista "Doing"
+            lstDone.DisplayMember = "descricao"; // Exibir a descrição da tarefa na lista "Done"
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -58,12 +75,17 @@ namespace iTasks
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            else
+            Tarefa tarefaSelecionada = lstTodo.Items[index] as Tarefa;
+            if (tarefaSelecionada == null)
             {
-                string tarefa = lstTodo.Items[index].ToString();
-                lstDoing.Items.Add(tarefa);
-                lstTodo.Items.RemoveAt(index);
+                return;
             }
+
+            tarefaSelecionada.estadoAtual = EstadoTarefa.Doing;
+
+            TarefasController.AtualizarEstadoTarefa(tarefaSelecionada);
+
+            frmKanban_Load(null, null); // Recarregar a lista de tarefas para refletir a mudança de estado
         }
 
         private void btSetTodo_Click(object sender, EventArgs e)
@@ -75,12 +97,20 @@ namespace iTasks
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            else
+            Tarefa tarefaSelecionada = lstDoing.Items[index] as Tarefa;
+            if (tarefaSelecionada == null)
             {
-                string tarefa = lstDoing.Items[index].ToString();
-                lstDoing.Items.RemoveAt(index);
-                lstTodo.Items.Add(tarefa);
+                return;
             }
+            if (tarefaSelecionada.estadoAtual == EstadoTarefa.Done)
+            {
+                MessageBox.Show("Tarefas concluídas não podem ser reiniciadas.",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            tarefaSelecionada.estadoAtual = EstadoTarefa.ToDo;
+            TarefasController.AtualizarEstadoTarefa(tarefaSelecionada);
+            frmKanban_Load(null, null); // Recarregar a lista de tarefas para refletir a mudança de estado
         }
 
         private void btSetDone_Click(object sender, EventArgs e)
@@ -92,12 +122,14 @@ namespace iTasks
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            else
+            Tarefa tarefaSelecionada = lstDoing.Items[index] as Tarefa;
+            if (tarefaSelecionada == null)
             {
-                string tarefa = lstDoing.Items[index].ToString();
-                lstDoing.Items.RemoveAt(index);
-                lstDone.Items.Add(tarefa);
+                return;
             }
+            tarefaSelecionada.estadoAtual = EstadoTarefa.Done;
+            TarefasController.AtualizarEstadoTarefa(tarefaSelecionada);
+            frmKanban_Load(null, null); // Recarregar a lista de tarefas para refletir a mudança de estado
         }
 
         private void sairToolStripMenuItem_Click(object sender, EventArgs e)
@@ -161,5 +193,6 @@ namespace iTasks
             frmConsultaTarefasEmCurso verTarefasEmCurso = new frmConsultaTarefasEmCurso();
             verTarefasEmCurso.ShowDialog();
         }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using iTasks.Models;
+﻿using iTasks.Controllers;
+using iTasks.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,6 +32,7 @@ namespace iTasks
                 txtdataRealFim.Text = "";
                 txtDataCriacao.Text = "";
             }
+
             
         }
 
@@ -41,22 +43,58 @@ namespace iTasks
 
         private void btGravar_Click(object sender, EventArgs e)
         {
-            Tarefa tarefa = new Tarefa();
-            tarefa.descricao = txtDesc.Text;
-            tarefa.tipoTarefa = (TipoTarefa)cbTipoTarefa.SelectedItem;
-            tarefa.programador = (Programador)cbProgramador.SelectedItem;
-            tarefa.ordemExecucao = int.Parse(txtOrdem.Text);
-            tarefa.storyPoints= int.Parse(txtStoryPoints.Text);
-            tarefa.dataPrevistaInicio = dtInicio.Value;
-            tarefa.dataPrevistaFim = dtFim.Value;
+            if (string.IsNullOrWhiteSpace(txtDesc.Text) || cbTipoTarefa.SelectedItem == null || cbProgramador.SelectedItem == null 
+                || int.Parse(txtOrdem.Text) <= 0 || int.Parse(txtStoryPoints.Text) <= 0 || dtInicio.Value < DateTime.Now || dtInicio.Value < DateTime.Now)
+            {
+                MessageBox.Show("Por favor, preencha todos os campos corretamente.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
+            int tarefasAtivas = TarefasController.tarefasAtivas((Programador)cbProgramador.SelectedItem);
 
+            if (tarefasAtivas >= 2)
+            {
+                MessageBox.Show("Este programador já tem 2 tarefas atribuídas.", "Limite atingido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Não permite atribuir mais tarefas
+            }
+
+            var tarefa = new Tarefa
+            {
+                descricao = txtDesc.Text,
+                tipoTarefa = (TipoTarefa)cbTipoTarefa.SelectedItem,
+                programador = (Programador)cbProgramador.SelectedItem,
+                ordemExecucao = int.Parse(txtOrdem.Text),
+                storyPoints = int.Parse(txtStoryPoints.Text),
+                dataPrevistaInicio = dtInicio.Value,
+                dataPrevistaFim = dtFim.Value,
+                dataCriacao = DateTime.Now,
+                estadoAtual = EstadoTarefa.ToDo
+            };
+            var tarefaCriada = TarefasController.AdicionarTarefa(tarefa);
+            if (tarefaCriada== true) 
+            {
+
+                MessageBox.Show("Tarefa criada com sucesso","Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            else
+            {
+                MessageBox.Show("Erro! Não foi possível criar a tarefa","Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
         }
-
         private void frmDetalhesTarefa_Load(object sender, EventArgs e)
         {
+            var tiposTarefas = TipotarefaController.ObterTiposTarefas();
+            cbTipoTarefa.DataSource = tiposTarefas;
+            cbTipoTarefa.DisplayMember = "nome"; // Exibir o nome do tipo de tarefa
+            cbTipoTarefa.ValueMember = "id"; // Usar o ID como valor
 
+            var programadores = UtilizadoresController.ObterProgramadores();
+            cbProgramador.DataSource = programadores;
+            cbProgramador.DisplayMember = "nome"; // Exibir o nome do programador
+            cbProgramador.ValueMember = "id"; // Usar o ID como valor
         }
     }
 }

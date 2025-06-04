@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -44,6 +45,22 @@ namespace iTasks.Controllers
                 MessageBox.Show($"Erro ao adicionar programador: {ex.Message}",
                     "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
+            }
+        }
+
+        public static List<Utilizador> ObterProgramadores()
+        {
+            using (var db = new iTasksContext())
+            {
+                return db.Programadores.ToList<Utilizador>();
+            }
+        }
+
+        public static List<Utilizador> ObterGestores()
+        {
+            using (var db = new iTasksContext())
+            {
+                return db.Gestores.ToList<Utilizador>();
             }
         }
     }
