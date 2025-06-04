@@ -10,6 +10,11 @@ namespace iTasks.Models
     {
         public Departamento departamento { get; set; }
         public bool GereUtilizadores { get; set; }
+        public override string ToString()
+        {
+            string texto = this.nome + "(" + this.id + ")";
+            return texto;
+        }
 
     }
     public enum Departamento

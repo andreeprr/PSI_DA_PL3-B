@@ -10,6 +10,11 @@ namespace iTasks.Models
     {
         public Gestor gestor { get; set; }
         public NivelExperiencia NivelExperiencia { get; set; }
+        public override string ToString()
+        {
+            string texto = this.nome + "(" + this.id + ")";
+            return texto;
+        }
 
     }
     public enum NivelExperiencia
