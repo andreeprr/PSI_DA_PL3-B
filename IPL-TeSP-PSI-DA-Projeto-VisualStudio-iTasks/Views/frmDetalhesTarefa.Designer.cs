@@ -56,6 +56,8 @@
             this.btFechar = new System.Windows.Forms.Button();
             this.txtStoryPoints = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
+            this.txtIdGestor = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtId
@@ -293,11 +295,30 @@
             this.label12.TabIndex = 30;
             this.label12.Text = "StoryPoints:";
             // 
+            // txtIdGestor
+            // 
+            this.txtIdGestor.Location = new System.Drawing.Point(426, 71);
+            this.txtIdGestor.Name = "txtIdGestor";
+            this.txtIdGestor.ReadOnly = true;
+            this.txtIdGestor.Size = new System.Drawing.Size(53, 20);
+            this.txtIdGestor.TabIndex = 33;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(379, 71);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(41, 13);
+            this.label13.TabIndex = 32;
+            this.label13.Text = "Gestor:";
+            // 
             // frmDetalhesTarefa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(575, 366);
+            this.Controls.Add(this.txtIdGestor);
+            this.Controls.Add(this.label13);
             this.Controls.Add(this.txtStoryPoints);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.btFechar);
@@ -364,5 +385,7 @@
         private System.Windows.Forms.Button btFechar;
         private System.Windows.Forms.TextBox txtStoryPoints;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox txtIdGestor;
+        private System.Windows.Forms.Label label13;
     }
 }

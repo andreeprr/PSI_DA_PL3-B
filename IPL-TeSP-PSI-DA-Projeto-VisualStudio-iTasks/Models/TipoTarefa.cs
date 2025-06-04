@@ -10,12 +10,10 @@ namespace iTasks
     {
         public int id { get; set; }
         public string nome { get; set; }
-     public override string ToString()
-            {
-                return "|"+ id +"|"+ " " + nome; //retorna o nome do tipo de tarefa para ser exibido na lista
-            }
-
+        public override string ToString()
+        {
+            string texto = this.nome + " (" + this.id + ")";
+            return texto;
+        }
     }
-
-   
-    }
+}

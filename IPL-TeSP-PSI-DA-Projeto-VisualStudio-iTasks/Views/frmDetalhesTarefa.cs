@@ -14,12 +14,15 @@ namespace iTasks
 {
     public partial class frmDetalhesTarefa : Form
     {
+        private Tarefa tarefa_ { get; set; }
         public frmDetalhesTarefa(Utilizador utilizador, Tarefa tarefa)
         {
             InitializeComponent();
-            txtId.Text = utilizador.id.ToString();
-            if (tarefa != null) 
+            tarefa = tarefa_;
+            txtIdGestor.Text = utilizador.id.ToString();
+            if (tarefa != null && utilizador is Gestor) 
             {
+                txtId.Text = tarefa.id.ToString();
                 txtEstado.Text = tarefa.estadoAtual.ToString();
                 if (tarefa.dataRealInicio !=null)
                 {
@@ -29,13 +32,44 @@ namespace iTasks
                 {
                     txtdataRealFim.Text = tarefa.dataRealFim.Value.ToString("dd/MM/yyyy HH:mm:ss");
                 }
-
-                
                 txtDataCriacao.Text = tarefa.dataCriacao.ToString("dd/MM/yyyy HH:mm:ss");
+                txtDesc.Text = tarefa.descricao;
+                cbTipoTarefa.SelectedItem = tarefa.tipoTarefa;
+                cbProgramador.SelectedItem = tarefa.programador;
+                txtOrdem.Text = tarefa.ordemExecucao.ToString();
+                txtStoryPoints.Text = tarefa.storyPoints.ToString();
+                dtInicio.Value = tarefa.dataPrevistaInicio;
+                dtFim.Value = tarefa.dataPrevistaFim;
+
+            }
+            else if (tarefa != null && utilizador is Programador)
+            {
+                btGravar.Enabled = false;
+                txtId.Text = tarefa.id.ToString();
+                txtEstado.Text = tarefa.estadoAtual.ToString();
+                if (tarefa.dataRealInicio != null)
+                {
+                    txtDataRealini.Text = tarefa.dataRealInicio.Value.ToString("dd/MM/yyyy HH:mm:ss");
+                }
+                if (tarefa.dataRealFim != null)
+                {
+                    txtdataRealFim.Text = tarefa.dataRealFim.Value.ToString("dd/MM/yyyy HH:mm:ss");
+                }
+                txtDataCriacao.Text = tarefa.dataCriacao.ToString("dd/MM/yyyy HH:mm:ss");
+                txtDesc.Text = tarefa.descricao;
+                cbTipoTarefa.SelectedItem = tarefa.tipoTarefa;
+                cbProgramador.SelectedItem = tarefa.programador;
+                txtOrdem.Text = tarefa.ordemExecucao.ToString();
+                txtStoryPoints.Text = tarefa.storyPoints.ToString();
+                dtInicio.Value = tarefa.dataPrevistaInicio;
+                dtFim.Value = tarefa.dataPrevistaFim;
+
+
             }
             else
             {
-               txtEstado.Text = EstadoTarefa.ToDo.ToString();
+                txtId.Text = "";
+                txtEstado.Text = EstadoTarefa.ToDo.ToString();
                 txtDataRealini.Text = "";
                 txtdataRealFim.Text = "";
                 txtDataCriacao.Text = "";
@@ -51,6 +85,7 @@ namespace iTasks
 
         private void btGravar_Click(object sender, EventArgs e)
         {
+            TarefasController.AtualizarTarefa(tarefa_);
             if (string.IsNullOrWhiteSpace(txtDesc.Text) || cbTipoTarefa.SelectedItem == null || cbProgramador.SelectedItem == null 
                 || int.Parse(txtOrdem.Text) <= 0 || int.Parse(txtStoryPoints.Text) <= 0 || dtInicio.Value < DateTime.Now || dtInicio.Value < DateTime.Now)
             {
@@ -91,18 +126,15 @@ namespace iTasks
                 return;
             }
 
+
         }
         private void frmDetalhesTarefa_Load(object sender, EventArgs e)
         {
             var tiposTarefas = TipotarefaController.ObterTiposTarefas();
             cbTipoTarefa.DataSource = tiposTarefas;
-            cbTipoTarefa.DisplayMember = "nome"; // Exibir o nome do tipo de tarefa
-            cbTipoTarefa.ValueMember = "id"; // Usar o ID como valor
 
             var programadores = UtilizadoresController.ObterProgramadores();
             cbProgramador.DataSource = programadores;
-            cbProgramador.DisplayMember = "nome"; // Exibir o nome do programador
-            cbProgramador.ValueMember = "id"; // Usar o ID como valor
         }
     }
 }

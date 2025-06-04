@@ -190,5 +190,10 @@ namespace iTasks
             verTarefasEmCurso.ShowDialog();
         }
 
+        private void lstTodo_DoubleClick(object sender, EventArgs e)
+        {
+            frmDetalhesTarefa detalhesTarefa = new frmDetalhesTarefa(utilizadorAutenticado, lstTodo.SelectedItem as Tarefa);
+            detalhesTarefa.ShowDialog();
+        }
     }
 }
