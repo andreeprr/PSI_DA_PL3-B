@@ -107,7 +107,7 @@ namespace iTasks
                 MessageBox.Show("Campo não pode estar vazio");
                 return;
             }
-
+                
             //Criação do objeto Gestor com os dados do formulário
             var gestor = new Gestor
             {
@@ -169,6 +169,28 @@ namespace iTasks
             txtPasswordProg.Text = "";
             cbNivelProg.SelectedIndex = -1;
             cbGestorProg.SelectedIndex = -1;
+        }
+
+        private void btNovoGestor_Click(object sender, EventArgs e)
+        {
+            lstListaGestores.SelectedIndex = -1; // Desseleciona
+            LimparCamposGestor();
+        }
+
+        private void btEliminarGestor_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btLimparProg_Click(object sender, EventArgs e)
+        {
+            lstListaProgramadores.SelectedIndex = -1; // Desseleciona
+            LimparCamposProgramador();
+        }
+
+        private void btEliminarProg_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -59,6 +59,10 @@
             this.label9 = new System.Windows.Forms.Label();
             this.txtNomeProg = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.btNovoGestor = new System.Windows.Forms.Button();
+            this.btEliminarGestor = new System.Windows.Forms.Button();
+            this.btEliminarProg = new System.Windows.Forms.Button();
+            this.btLimparProg = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -139,6 +143,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btEliminarGestor);
+            this.groupBox2.Controls.Add(this.btNovoGestor);
             this.groupBox2.Controls.Add(this.chkGereUtilizadores);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.btGravarGestor);
@@ -229,6 +235,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.btEliminarProg);
+            this.groupBox3.Controls.Add(this.btLimparProg);
             this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.cbGestorProg);
             this.groupBox3.Controls.Add(this.label6);
@@ -398,6 +406,50 @@
             this.label10.TabIndex = 35;
             this.label10.Text = "Nome:";
             // 
+            // btNovoGestor
+            // 
+            this.btNovoGestor.Location = new System.Drawing.Point(391, 384);
+            this.btNovoGestor.Margin = new System.Windows.Forms.Padding(4);
+            this.btNovoGestor.Name = "btNovoGestor";
+            this.btNovoGestor.Size = new System.Drawing.Size(268, 28);
+            this.btNovoGestor.TabIndex = 44;
+            this.btNovoGestor.Text = "Limpar";
+            this.btNovoGestor.UseVisualStyleBackColor = true;
+            this.btNovoGestor.Click += new System.EventHandler(this.btNovoGestor_Click);
+            // 
+            // btEliminarGestor
+            // 
+            this.btEliminarGestor.Location = new System.Drawing.Point(391, 420);
+            this.btEliminarGestor.Margin = new System.Windows.Forms.Padding(4);
+            this.btEliminarGestor.Name = "btEliminarGestor";
+            this.btEliminarGestor.Size = new System.Drawing.Size(268, 28);
+            this.btEliminarGestor.TabIndex = 45;
+            this.btEliminarGestor.Text = "Eliminar";
+            this.btEliminarGestor.UseVisualStyleBackColor = true;
+            this.btEliminarGestor.Click += new System.EventHandler(this.btEliminarGestor_Click);
+            // 
+            // btEliminarProg
+            // 
+            this.btEliminarProg.Location = new System.Drawing.Point(392, 420);
+            this.btEliminarProg.Margin = new System.Windows.Forms.Padding(4);
+            this.btEliminarProg.Name = "btEliminarProg";
+            this.btEliminarProg.Size = new System.Drawing.Size(268, 28);
+            this.btEliminarProg.TabIndex = 47;
+            this.btEliminarProg.Text = "Eliminar";
+            this.btEliminarProg.UseVisualStyleBackColor = true;
+            this.btEliminarProg.Click += new System.EventHandler(this.btEliminarProg_Click);
+            // 
+            // btLimparProg
+            // 
+            this.btLimparProg.Location = new System.Drawing.Point(392, 384);
+            this.btLimparProg.Margin = new System.Windows.Forms.Padding(4);
+            this.btLimparProg.Name = "btLimparProg";
+            this.btLimparProg.Size = new System.Drawing.Size(268, 28);
+            this.btLimparProg.TabIndex = 46;
+            this.btLimparProg.Text = "Limpar";
+            this.btLimparProg.UseVisualStyleBackColor = true;
+            this.btLimparProg.Click += new System.EventHandler(this.btLimparProg_Click);
+            // 
             // frmGereUtilizadores
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -452,5 +504,9 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox cbGestorProg;
+        private System.Windows.Forms.Button btEliminarGestor;
+        private System.Windows.Forms.Button btNovoGestor;
+        private System.Windows.Forms.Button btEliminarProg;
+        private System.Windows.Forms.Button btLimparProg;
     }
 }

@@ -50,19 +50,66 @@ namespace iTasks.Controllers
             }
         }
 
-        public static List<Utilizador> ObterProgramadores()
-        {
-            using (var db = new iTasksContext())
-            {
-                return db.Programadores.ToList<Utilizador>();
-            }
-        }
-
         public static List<Utilizador> ObterGestores()
         {
             using (var db = new iTasksContext())
             {
+                //Devolve a lista de gestores
                 return db.Gestores.ToList<Utilizador>();
+            }
+        }
+
+        public static List<Utilizador> ObterProgramadores()
+        {
+            using (var db = new iTasksContext())
+            {
+                //Devolve a lista de programadores
+                return db.Programadores.ToList<Utilizador>();
+            }
+        }
+
+        public static bool EliminarGestor(Gestor gestor)
+        {
+            try
+            {
+                using (var db = new iTasksContext())
+                {
+                    // Anexa o gestor ao contexto, caso não esteja
+                    db.Gestores.Attach(gestor);
+                    // Busca os programadores associados a este gestor
+                    var programadoresAssociados = db.Programadores.Where(p => p.gestor.id == gestor.id).ToList();
+                    // Remove os programadores associados
+                    db.Programadores.RemoveRange(programadoresAssociados);
+                    //Remove o Gestor
+                    db.Gestores.Remove(gestor);
+                    db.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao eliminar gestor: {ex.Message}",
+                    "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        public static bool EliminarProgramador(Programador programador)
+        {
+            try
+            {
+                using (var db = new iTasksContext())
+                {
+                    db.Programadores.Remove(programador);
+                    db.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao eliminar programador: {ex.Message}",
+                    "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
     }
