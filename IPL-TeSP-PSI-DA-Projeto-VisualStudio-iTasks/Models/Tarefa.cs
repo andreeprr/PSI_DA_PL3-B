@@ -18,11 +18,16 @@ namespace iTasks
         public DateTime dataPrevistaFim { get; set; }
         public TipoTarefa tipoTarefa { get; set; }
         public int storyPoints { get; set; }
-        public DateTime dataRealInicio { get; set; }
-        public DateTime dataRealFim { get; set; }
+        public DateTime? dataRealInicio { get; set; }
+        public DateTime? dataRealFim { get; set; }
         public DateTime dataCriacao { get; set; }
         public EstadoTarefa estadoAtual { get; set; }
 
+        public override string ToString()
+        {
+            string texto = this.descricao + " (" + this.ordemExecucao + ")";
+            return texto;
+        }
     }
     public enum EstadoTarefa
     {

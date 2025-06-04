@@ -21,8 +21,16 @@ namespace iTasks
             if (tarefa != null) 
             {
                 txtEstado.Text = tarefa.estadoAtual.ToString();
-                txtDataRealini.Text = tarefa.dataRealInicio.ToString("dd/MM/yyyy HH:mm:ss");
-                txtdataRealFim.Text = tarefa.dataRealFim.ToString("dd/MM/yyyy HH:mm:ss");
+                if (tarefa.dataRealInicio !=null)
+                {
+                    txtDataRealini.Text = tarefa.dataRealInicio.Value.ToString("dd/MM/yyyy HH:mm:ss");
+                }
+                if (tarefa.dataRealFim != null)
+                {
+                    txtdataRealFim.Text = tarefa.dataRealFim.Value.ToString("dd/MM/yyyy HH:mm:ss");
+                }
+
+                
                 txtDataCriacao.Text = tarefa.dataCriacao.ToString("dd/MM/yyyy HH:mm:ss");
             }
             else

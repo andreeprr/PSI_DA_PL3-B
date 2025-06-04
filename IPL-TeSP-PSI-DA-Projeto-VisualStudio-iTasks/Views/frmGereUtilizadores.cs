@@ -104,15 +104,13 @@ namespace iTasks
             // Carregar as listas de gestores e programadores ao iniciar o formulário
             List<Utilizador> programadores= UtilizadoresController.ObterProgramadores(); //obter a lista de tipos de tarefas da base de dados
             lstListaProgramadores.DataSource = programadores;
-            lstListaProgramadores.DisplayMember = "nome";
 
             List<Utilizador> gestores = UtilizadoresController.ObterGestores(); //obter a lista de tipos de tarefas da base de dados
+            List<Utilizador> gestoresCombobox = UtilizadoresController.ObterGestores();
             lstListaGestores.DataSource = gestores;
-            lstListaGestores.DisplayMember = "nome";
 
             //Popular a ComboBox de gestores para programadores
-            cbGestorProg.DataSource = gestores;
-            cbGestorProg.DisplayMember = "nome"; // Exibir o nome do gestor
+            cbGestorProg.DataSource = gestoresCombobox;
         }
     }
 }
