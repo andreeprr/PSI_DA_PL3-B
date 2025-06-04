@@ -40,6 +40,8 @@ namespace iTasks
             kanban.ShowDialog();
             this.Close();
 
+           
+
         }
     }
 }
