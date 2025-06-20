@@ -94,6 +94,7 @@
             this.lstDoing.Name = "lstDoing";
             this.lstDoing.Size = new System.Drawing.Size(296, 422);
             this.lstDoing.TabIndex = 0;
+            this.lstDoing.DoubleClick += new System.EventHandler(this.lstDoing_DoubleClick);
             // 
             // groupBox3
             // 
@@ -113,6 +114,7 @@
             this.lstDone.Name = "lstDone";
             this.lstDone.Size = new System.Drawing.Size(296, 422);
             this.lstDone.TabIndex = 0;
+            this.lstDone.DoubleClick += new System.EventHandler(this.lstDone_DoubleClick);
             // 
             // menuStrip1
             // 
@@ -134,6 +136,7 @@
             this.ficheiroToolStripMenuItem.Name = "ficheiroToolStripMenuItem";
             this.ficheiroToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.ficheiroToolStripMenuItem.Text = "Ficheiro";
+            this.ficheiroToolStripMenuItem.Click += new System.EventHandler(this.ficheiroToolStripMenuItem_Click);
             // 
             // sairToolStripMenuItem
             // 
@@ -156,6 +159,7 @@
             this.utilizadoresToolStripMenuItem.Name = "utilizadoresToolStripMenuItem";
             this.utilizadoresToolStripMenuItem.Size = new System.Drawing.Size(126, 20);
             this.utilizadoresToolStripMenuItem.Text = "Gestão da Aplicação";
+            this.utilizadoresToolStripMenuItem.Click += new System.EventHandler(this.utilizadoresToolStripMenuItem_Click);
             // 
             // gerirUtilizadoresToolStripMenuItem
             // 
@@ -179,6 +183,7 @@
             this.listagensToolStripMenuItem.Name = "listagensToolStripMenuItem";
             this.listagensToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
             this.listagensToolStripMenuItem.Text = "Listagens";
+            this.listagensToolStripMenuItem.Click += new System.EventHandler(this.listagensToolStripMenuItem_Click);
             // 
             // tarefasTerminadasToolStripMenuItem
             // 

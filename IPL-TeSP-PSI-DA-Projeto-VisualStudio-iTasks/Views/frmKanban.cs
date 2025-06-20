@@ -19,9 +19,15 @@ namespace iTasks
         {
             utilizadorAutenticado = utilizador; 
             InitializeComponent();
-            string nome = utilizador.nome; 
-            label1.Text = $"Bem vindo {nome}!"; 
-            List<Tarefa> tarefas = TarefasController.ObterTarefasPorUtilizador(utilizadorAutenticado); //obter a lista de tarefas do utilizador autenticado
+            string nome = utilizador.nome;
+            label1.Text = $"Bem vindo {nome}!";
+            List<Tarefa> tarefas = TarefasController.ObterTarefasPorUtilizador(utilizadorAutenticado);
+            if(utilizadorAutenticado is Programador)
+            {
+                btNova.Visible = false; // Ocultar o botão "Nova Tarefa" para programadores
+                btPrevisao.Visible = false; // Ocultar o botão "Previsão" para programadores
+                utilizadoresToolStripMenuItem.Visible = false; // Ocultar o menu de utilizadores para programadores
+            }
         }
 
         private void frmKanban_Load(object sender, EventArgs e)
@@ -91,7 +97,8 @@ namespace iTasks
                 return;
             }
 
-            tarefaSelecionada.estadoAtual = EstadoTarefa.Doing; // Muda o estado da tarefa selecionada para "Doing"
+            tarefaSelecionada.estadoAtual = EstadoTarefa.Doing;
+            tarefaSelecionada.dataRealInicio = DateTime.Now; // Definir a data de início real quando a tarefa é movida para Doing
 
             TarefasController.AtualizarEstadoTarefa(tarefaSelecionada); // Atualiza o estado da tarefa na base de dados
 
@@ -119,8 +126,9 @@ namespace iTasks
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            tarefaSelecionada.estadoAtual = EstadoTarefa.ToDo; // Muda o estado da tarefa selecionada para "To Do"
-            TarefasController.AtualizarEstadoTarefa(tarefaSelecionada); // Atualiza o estado da tarefa na base de dados
+            tarefaSelecionada.estadoAtual = EstadoTarefa.ToDo;
+            tarefaSelecionada.dataRealInicio = null; // Limpar a data de início real quando a tarefa é movida de volta para To Do
+            TarefasController.AtualizarEstadoTarefa(tarefaSelecionada);
             frmKanban_Load(null, null); // Recarregar a lista de tarefas para refletir a mudança de estado
         }
 
@@ -139,8 +147,9 @@ namespace iTasks
                 MessageBox.Show("Tarefa selecionada inválida.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            tarefaSelecionada.estadoAtual = EstadoTarefa.Done; // Muda o estado da tarefa selecionada para "Done"
-            TarefasController.AtualizarEstadoTarefa(tarefaSelecionada); // Atualiza o estado da tarefa na base de dados
+            tarefaSelecionada.estadoAtual = EstadoTarefa.Done;
+            tarefaSelecionada.dataRealFim = DateTime.Now; // Definir a data de fim real quando a tarefa é movida para Done
+            TarefasController.AtualizarEstadoTarefa(tarefaSelecionada);
             frmKanban_Load(null, null); // Recarregar a lista de tarefas para refletir a mudança de estado
         }
 
@@ -208,8 +217,35 @@ namespace iTasks
 
         private void lstTodo_DoubleClick(object sender, EventArgs e)
         {
-            frmDetalhesTarefa detalhesTarefa = new frmDetalhesTarefa(utilizadorAutenticado, lstTodo.SelectedItem as Tarefa); // criar uma nova instância do formulário de detalhes da tarefa com a tarefa selecionada
-            detalhesTarefa.ShowDialog(); // mostrar o formulário de detalhes da tarefa
+            frmDetalhesTarefa detalhesTarefa = new frmDetalhesTarefa(utilizadorAutenticado, lstTodo.SelectedItem as Tarefa);
+            detalhesTarefa.ShowDialog();
         }
+        private void lstDoing_DoubleClick(object sender, EventArgs e)
+        {
+            frmDetalhesTarefa detalhesTarefa = new frmDetalhesTarefa(utilizadorAutenticado, lstDoing.SelectedItem as Tarefa);
+            detalhesTarefa.ShowDialog();
+        }
+        private void lstDone_DoubleClick(object sender, EventArgs e)
+        {
+            frmDetalhesTarefa detalhesTarefa = new frmDetalhesTarefa(utilizadorAutenticado, lstDone.SelectedItem as Tarefa);
+            detalhesTarefa.ShowDialog();
+        }
+
+        private void utilizadoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listagensToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ficheiroToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }
