@@ -65,13 +65,14 @@ namespace iTasks
         private void btGravarGestor_Click(object sender, EventArgs e)
         {
             //Validação simples para garantir que os campos obrigatórios não estejam vazios
-            if (txtNomeGestor.Text == "" || txtUsernameGestor.Text == "" || txtPasswordGestor.Text == "" || cbDepartamento.SelectedItem == null)
+            if (txtNomeGestor.Text == "" || txtUsernameGestor.Text == "" || txtPasswordGestor.Text == "" || 
+                cbDepartamento.SelectedItem == null)
             {
                 MessageBox.Show("Campo não pode estar vazio");
                 return;
-            }
+            };
 
-            //Criação do objeto Programador com os dados do formulário
+            //Criação do objeto Gestor com os dados do formulário
             var gestor = new Gestor
             {
                 nome = txtNomeGestor.Text,
@@ -89,6 +90,7 @@ namespace iTasks
                 //Obtém a lista de gestores da base de dados e popula a ListBox
                 List<Utilizador> gestores = UtilizadoresController.ObterGestores();
                 lstListaGestores.DataSource = gestores;
+                AtualizarComboGestores();
                 return;
             }
             else
@@ -98,44 +100,54 @@ namespace iTasks
             }
 
         }
+        private void AtualizarComboGestores()
+        {
+            cbGestorProg.DataSource = null;
+            cbGestorProg.DataSource = UtilizadoresController.ObterGestores();
+            cbGestorProg.DisplayMember = "nome"; // Ajuste para o campo que você quiser mostrar
+        }
 
         private void btGravarProg_Click(object sender, EventArgs e)
         {
+            // Validação simples para garantir que os campos obrigatórios não estejam vazios
+            if (txtNomeProg.Text == "" || txtUsernameProg.Text == "" || txtPasswordProg.Text == "" ||
+                cbNivelProg.SelectedItem == null || cbGestorProg.SelectedItem == null)
             //Validação simples para garantir que os campos obrigatórios não estejam vazios
             if (txtNomeProg.Text == "" || txtNomeProg.Text == "" || txtNomeProg.Text == "" || cbDepartamento.SelectedItem == null)
             {
                 MessageBox.Show("Campo não pode estar vazio");
                 return;
             }
-                
-            //Criação do objeto Gestor com os dados do formulário
-            var gestor = new Gestor
+
+            // Criação do objeto Programador com os dados do formulário
+            var programador = new Programador
             {
-                nome = txtNomeGestor.Text,
-                username = txtUsernameGestor.Text,
-                password = txtPasswordGestor.Text,
-                departamento = (Departamento)cbDepartamento.SelectedItem,
-                GereUtilizadores = chkGereUtilizadores.Checked
+                nome = txtNomeProg.Text,
+                username = txtUsernameProg.Text,
+                password = txtPasswordProg.Text,
+                NivelExperiencia = (NivelExperiencia)cbNivelProg.SelectedItem,
+                gestor = (Gestor)cbGestorProg.SelectedItem
             };
 
-            //Indica se o gestor foi adicionado com sucesso (true) ou não (false), por isso usamos o bool para verificar o resultado
-            bool verificaGestor = UtilizadoresController.AdicionarGestor(gestor);
-            if (verificaGestor == true)
+            // Indica se o programador foi adicionado com sucesso
+            bool verificaProg = UtilizadoresController.AdicionarProgramador(programador);
+            if (verificaProg == true)
             {
-                MessageBox.Show("Gestor criado com sucesso");
-                //Obtém a lista de programadores da base de dados e popula a ListBox
-                List<Utilizador> gestores = UtilizadoresController.ObterGestores();
-                lstListaGestores.DataSource = gestores;
+                MessageBox.Show("Programador criado com sucesso");
+                // Obtém a lista de programadores da base de dados e popula a ListBox
+                List<Utilizador> programadores = UtilizadoresController.ObterProgramadores();
+                lstListaProgramadores.DataSource = programadores;
                 return;
             }
             else
             {
-                MessageBox.Show("Erro! Não foi possível criar o gestor");
+                MessageBox.Show("Erro! Não foi possível criar o programador");
                 return;
             }
         }
 
         private void frmGereUtilizadores_Load(object sender, EventArgs e)
+        // Carrega e mostra os dados iniciais de gestores e programadores nas listas e na ComboBox ao abrir o formulário
         {
             //Carregar as listas de gestores e programadores ao iniciar o formulário
             List<Utilizador> programadores= UtilizadoresController.ObterProgramadores(); //obter a lista de tipos de tarefas da base de dados
@@ -179,7 +191,40 @@ namespace iTasks
 
         private void btEliminarGestor_Click(object sender, EventArgs e)
         {
+            // Verifica se algum gestor está selecionado
+            if (lstListaGestores.SelectedItem == null)
+            {
+                MessageBox.Show("Selecione um gestor para eliminar.");
+                return;
+            }
 
+            // Confirmação com o utilizador
+            DialogResult confirm = MessageBox.Show(
+                "Tem certeza que deseja eliminar este gestor?\nOs programadores associados também serão eliminados.",
+                "Confirmação",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (confirm == DialogResult.No)
+                return;
+
+            // Converte o item selecionado para Gestor
+            Gestor gestor = (Gestor)lstListaGestores.SelectedItem;
+
+            // Elimina o gestor
+            bool eliminaGestor = UtilizadoresController.EliminarGestor(gestor);
+            if (eliminaGestor)
+            {
+                MessageBox.Show("Gestor eliminado com sucesso.");
+                // Atualiza a lista
+                lstListaGestores.DataSource = UtilizadoresController.ObterGestores();
+                lstListaProgramadores.DataSource = UtilizadoresController.ObterProgramadores(); // atualiza também os programadores
+                AtualizarComboGestores();
+            }
+            else
+            {
+                MessageBox.Show("Erro ao eliminar o gestor.");
+            }
         }
 
         private void btLimparProg_Click(object sender, EventArgs e)
@@ -189,6 +234,47 @@ namespace iTasks
         }
 
         private void btEliminarProg_Click(object sender, EventArgs e)
+        {
+            // Verifica se algum programador está selecionado
+            if (lstListaProgramadores.SelectedItem == null)
+            {
+                MessageBox.Show("Selecione um programador para eliminar.");
+                return;
+            }
+
+            // Confirmação com o utilizador
+            DialogResult confirm = MessageBox.Show(
+                "Tem certeza que deseja eliminar este programador?",
+                "Confirmação",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (confirm == DialogResult.No)
+                return;
+
+            // Converte o item selecionado para Programador
+            Programador programador = (Programador)lstListaProgramadores.SelectedItem;
+
+            // Elimina o programador
+            bool eliminarProg = UtilizadoresController.EliminarProgramador(programador);
+            if (eliminarProg)
+            {
+                MessageBox.Show("Programador eliminado com sucesso.");
+                // Atualiza a lista de programadores
+                lstListaProgramadores.DataSource = UtilizadoresController.ObterProgramadores();
+            }
+            else
+            {
+                MessageBox.Show("Erro ao eliminar o programador.");
+            }
+        }
+
+        private void txtIdGestor_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtIdProg_TextChanged(object sender, EventArgs e)
         {
 
         }

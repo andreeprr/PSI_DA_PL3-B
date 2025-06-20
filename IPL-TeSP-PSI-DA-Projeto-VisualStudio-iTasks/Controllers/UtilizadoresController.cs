@@ -100,16 +100,23 @@ namespace iTasks.Controllers
             {
                 using (var db = new iTasksContext())
                 {
+                    // Anexa o programador ao contexto para garantir que ele está sendo rastreado
+                    db.Programadores.Attach(programador);
+
+                    // Remove o programador anexado ao contexto
                     db.Programadores.Remove(programador);
+
+                    // Salva a exclusão no banco
                     db.SaveChanges();
                 }
-                return true;
+                return true; // Exclusão bem-sucedida
             }
             catch (Exception ex)
             {
+                // Exibe erro se falhar a exclusão
                 MessageBox.Show($"Erro ao eliminar programador: {ex.Message}",
                     "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                return false; // Exclusão falhou
             }
         }
     }
