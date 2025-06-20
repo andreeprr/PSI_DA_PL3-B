@@ -297,7 +297,7 @@
             // 
             // txtIdGestor
             // 
-            this.txtIdGestor.Location = new System.Drawing.Point(426, 71);
+            this.txtIdGestor.Location = new System.Drawing.Point(426, 68);
             this.txtIdGestor.Name = "txtIdGestor";
             this.txtIdGestor.ReadOnly = true;
             this.txtIdGestor.Size = new System.Drawing.Size(53, 20);

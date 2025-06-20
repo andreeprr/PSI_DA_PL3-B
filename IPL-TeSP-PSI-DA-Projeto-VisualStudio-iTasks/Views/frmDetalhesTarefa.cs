@@ -18,9 +18,26 @@ namespace iTasks
         public frmDetalhesTarefa(Utilizador utilizador, Tarefa tarefa)
         {
             InitializeComponent();
-            tarefa = tarefa_;
+            //tarefa = tarefa_;
             txtIdGestor.Text = utilizador.id.ToString();
-            if (tarefa != null && utilizador is Gestor) 
+            if(tarefa == null)
+            {
+                var tarefas = TarefasController.ObterTarefas();
+                int maxId;
+                if (tarefas.Any()) 
+                {
+                    maxId = tarefas.Max(t => t.id) + 1; // Incrementa o ID máximo encontrado
+                    txtId.Text = maxId.ToString(); // Define o ID da nova tarefa
+                }
+                else
+                {
+                    maxId = 1; // Se não houver tarefas, começa com ID 1
+                    txtId.Text = maxId.ToString(); // Define o ID da nova tarefa
+                }
+                txtEstado.Text = EstadoTarefa.ToDo.ToString(); // Define o estado inicial da tarefa
+                txtDataCriacao.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"); // Define a data de criação da tarefa
+            }
+            else if (tarefa != null && utilizador is Gestor) 
             {
                 txtId.Text = tarefa.id.ToString();
                 txtEstado.Text = tarefa.estadoAtual.ToString();
