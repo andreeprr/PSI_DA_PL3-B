@@ -102,7 +102,7 @@ namespace iTasks
         private void btGravarProg_Click(object sender, EventArgs e)
         {
             //Validação simples para garantir que os campos obrigatórios não estejam vazios
-            if (txtNomeGestor.Text == "" || txtUsernameGestor.Text == "" || txtPasswordGestor.Text == "" || cbDepartamento.SelectedItem == null)
+            if (txtNomeProg.Text == "" || txtNomeProg.Text == "" || txtNomeProg.Text == "" || cbDepartamento.SelectedItem == null)
             {
                 MessageBox.Show("Campo não pode estar vazio");
                 return;
