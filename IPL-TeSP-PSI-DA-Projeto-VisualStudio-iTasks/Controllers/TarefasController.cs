@@ -58,15 +58,15 @@ namespace iTasks.Controllers
                     if (tarefaDb == null)
                         return false;
 
-                    tarefaDb.descricao = tarefa.descricao;
-                    tarefaDb.ordemExecucao = tarefa.ordemExecucao;
+                    tarefaDb.descricao = tarefa.descricao; // Certifica-se de que a descrição está anexada à tarefa
+                    tarefaDb.ordemExecucao = tarefa.ordemExecucao; // Certifica-se de que a ordem de execução está anexada à tarefa
                     tarefaDb.programador = tarefa.programador; // Certifica-se de que o programador está anexado à tarefa
-                    tarefaDb.tipoTarefa = tarefa.tipoTarefa;
-                    tarefaDb.storyPoints = tarefa.storyPoints;
-                    tarefaDb.dataPrevistaInicio = tarefa.dataPrevistaInicio;
-                    tarefaDb.dataPrevistaFim = tarefa.dataPrevistaFim;
+                    tarefaDb.tipoTarefa = tarefa.tipoTarefa;    // Certifica-se de que o tipo de tarefa está anexado à tarefa
+                    tarefaDb.storyPoints = tarefa.storyPoints; // Certifica-se de que os story points estão anexados à tarefa
+                    tarefaDb.dataPrevistaInicio = tarefa.dataPrevistaInicio;    // Certifica-se de que a data prevista de início está anexada à tarefa
+                    tarefaDb.dataPrevistaFim = tarefa.dataPrevistaFim; // Certifica-se de que a data prevista de fim está anexada à tarefa
 
-                    db.SaveChanges();
+                    db.SaveChanges(); // Certifica-se de que as alterações são salvas no banco de dados
                 }
                 return true;
             }
@@ -80,11 +80,11 @@ namespace iTasks.Controllers
         {
             try
             {
-                using (var db = new iTasksContext())
+                using (var db = new iTasksContext()) 
                 {
                     db.Programadores.Attach(tarefa.programador); // Certifica-se de que o programador está anexado à tarefa
-                    db.Tarefas.Add(tarefa);
-                    db.SaveChanges();
+                    db.Tarefas.Add(tarefa); // Adiciona a tarefa ao contexto
+                    db.SaveChanges(); 
                 }
                 return true;
             }
@@ -96,9 +96,9 @@ namespace iTasks.Controllers
         }
         public static List<Tarefa> ObterTarefas()
         {
-            using (var db = new iTasksContext())
+            using (var db = new iTasksContext()) 
             {
-                return db.Tarefas.ToList();
+                return db.Tarefas.ToList(); // Devolve a lista de tarefas
             }
         }
     }
