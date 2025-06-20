@@ -112,6 +112,8 @@ namespace iTasks
             // Validação simples para garantir que os campos obrigatórios não estejam vazios
             if (txtNomeProg.Text == "" || txtUsernameProg.Text == "" || txtPasswordProg.Text == "" ||
                 cbNivelProg.SelectedItem == null || cbGestorProg.SelectedItem == null)
+            //Validação simples para garantir que os campos obrigatórios não estejam vazios
+            if (txtNomeProg.Text == "" || txtNomeProg.Text == "" || txtNomeProg.Text == "" || cbDepartamento.SelectedItem == null)
             {
                 MessageBox.Show("Campo não pode estar vazio");
                 return;
