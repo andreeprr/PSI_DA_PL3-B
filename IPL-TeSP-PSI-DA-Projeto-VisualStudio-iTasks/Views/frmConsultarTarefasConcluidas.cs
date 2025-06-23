@@ -21,5 +21,10 @@ namespace iTasks
         {
             this.Close();
         }
+
+        private void frmConsultarTarefasConcluidas_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

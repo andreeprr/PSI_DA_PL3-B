@@ -40,6 +40,7 @@
             this.gvTarefasEmCurso.Name = "gvTarefasEmCurso";
             this.gvTarefasEmCurso.Size = new System.Drawing.Size(1026, 395);
             this.gvTarefasEmCurso.TabIndex = 0;
+            this.gvTarefasEmCurso.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvTarefasEmCurso_CellContentClick);
             // 
             // btFechar
             // 
@@ -60,6 +61,7 @@
             this.Controls.Add(this.gvTarefasEmCurso);
             this.Name = "frmConsultaTarefasEmCurso";
             this.Text = "frmConsultaTarefasEmCurso";
+            this.Load += new System.EventHandler(this.frmConsultaTarefasEmCurso_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gvTarefasEmCurso)).EndInit();
             this.ResumeLayout(false);
 

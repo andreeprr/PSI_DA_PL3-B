@@ -19,6 +19,24 @@ namespace iTasks.Controllers
             }
         }
 
+        public static List<Tarefa> ObterTarefasEmCurso()
+        {
+            // Aqui vamos buscar as tarefas em curso
+            using (var db = new iTasksContext())
+            {
+                return db.Tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Doing).ToList();
+            }
+        }
+
+        public static List<Tarefa> ObterTarefasConcluidas()
+        {
+            // Aqui vamos buscar as tarefas concluidas
+            using (var db = new iTasksContext())
+            {
+                return db.Tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Done).ToList();
+            }
+        }
+
         public static int tarefasAtivas(Programador programador)
         {
             using (var db = new iTasksContext())
@@ -60,15 +78,16 @@ namespace iTasks.Controllers
                     if (tarefaDb == null)
                         return false;
 
-                    tarefaDb.descricao = tarefa.descricao;
-                    tarefaDb.ordemExecucao = tarefa.ordemExecucao;
-                    tarefaDb.programador = tarefa.programador; // Certifica-se de que o programador está anexado à tarefa
-                    tarefaDb.tipoTarefa = tarefa.tipoTarefa;
-                    tarefaDb.storyPoints = tarefa.storyPoints;
-                    tarefaDb.dataPrevistaInicio = tarefa.dataPrevistaInicio;
-                    tarefaDb.dataPrevistaFim = tarefa.dataPrevistaFim;
+                    tarefaDb.descricao = tarefa.descricao; // Certifica-se de que a descrição está anexada à tarefa
+                    tarefaDb.ordemExecucao = tarefa.ordemExecucao; // Certifica-se de que a ordem de execução está anexada à tarefa
+                    tarefaDb.storyPoints = tarefa.storyPoints; // Certifica-se de que os story points estão anexados à tarefa
+                    tarefaDb.dataPrevistaInicio = tarefa.dataPrevistaInicio;    // Certifica-se de que a data prevista de início está anexada à tarefa
+                    tarefaDb.dataPrevistaFim = tarefa.dataPrevistaFim; // Certifica-se de que a data prevista de fim está anexada à tarefa
 
-                    db.SaveChanges();
+                    tarefaDb.programador = db.Programadores.Find(tarefa.programador.id); // Certifica-se de que o programador está anexado à tarefa
+                    tarefaDb.tipoTarefa = db.TipoTarefas.Find(tarefa.tipoTarefa.id); // Certifica-se de que o tipo de tarefa está anexado à tarefa
+
+                    db.SaveChanges(); // Certifica-se de que as alterações são salvas no banco de dados
                 }
                 return true;
             }
@@ -82,8 +101,9 @@ namespace iTasks.Controllers
         {
             try
             {
-                using (var db = new iTasksContext())
+                using (var db = new iTasksContext()) 
                 {
+                    db.Gestores.Attach(tarefa.gestor); // Certifica-se de que o gestor está anexado à tarefa
                     db.Programadores.Attach(tarefa.programador); // Certifica-se de que o programador está anexado à tarefa
                     db.TipoTarefas.Attach(tarefa.tipoTarefa); // Certifica-se de que o tipo de tarefa está anexado à tarefa
                     db.Tarefas.Add(tarefa);
@@ -99,10 +119,12 @@ namespace iTasks.Controllers
         }
         public static List<Tarefa> ObterTarefas()
         {
-            using (var db = new iTasksContext())
+            using (var db = new iTasksContext()) 
             {
-                return db.Tarefas.ToList();
+                return db.Tarefas.ToList(); // Devolve a lista de tarefas
             }
         }
+
+        
     }
 }

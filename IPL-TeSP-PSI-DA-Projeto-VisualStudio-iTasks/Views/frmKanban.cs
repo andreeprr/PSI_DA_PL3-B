@@ -6,38 +6,45 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace iTasks
 {
     public partial class frmKanban : Form
     {
-        Utilizador utilizadorAutenticado = null;
+        Utilizador utilizadorAutenticado;
         public frmKanban(Utilizador utilizador)
         {
-            utilizadorAutenticado = utilizador;
+            utilizadorAutenticado = utilizador; 
             InitializeComponent();
             string nome = utilizador.nome;
             label1.Text = $"Bem vindo {nome}!";
-            List<Tarefa> tarefas = TarefasController.ObterTarefasPorUtilizador(utilizadorAutenticado);
-            if(utilizadorAutenticado is Programador)
+            if(utilizadorAutenticado is Gestor)
             {
+                List<Tarefa> tarefas = TarefasController.ObterTarefas(); //obter a lista de tarefas da base de dados
+            }
+            else
+            {
+                List<Tarefa> tarefas = TarefasController.ObterTarefasPorUtilizador(utilizadorAutenticado);
                 btNova.Visible = false; // Ocultar o botão "Nova Tarefa" para programadores
                 btPrevisao.Visible = false; // Ocultar o botão "Previsão" para programadores
                 utilizadoresToolStripMenuItem.Visible = false; // Ocultar o menu de utilizadores para programadores
+                listagensToolStripMenuItem.Visible = false; // Ocultar o menu de listagens para programadores
             }
         }
 
         private void frmKanban_Load(object sender, EventArgs e)
         {
             // Carregar a lista de tarefas ao iniciar o formulário
-            List<Tarefa> tarefas = TarefasController.ObterTarefas(); //obter a lista de tarefas da base de dados
+            List<Tarefa> tarefas = TarefasController.ObterTarefasPorUtilizador(utilizadorAutenticado); //obter a lista de tarefas da base de dados
 
-            var tarefasTodo = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.ToDo).ToList();
-            var tarefasDoing = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Doing).ToList();
-            var tarefasDone = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Done).ToList();
+            var tarefasTodo = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.ToDo).ToList(); // Filtrar tarefas "To Do"
+            var tarefasDoing = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Doing).ToList(); // Filtrar tarefas "Doing"
+            var tarefasDone = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Done).ToList(); // Filtrar tarefas "Done"
 
             lstTodo.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
             lstDoing.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
@@ -55,22 +62,22 @@ namespace iTasks
 
         private void btNova_Click(object sender, EventArgs e)
         {
-            Tarefa tarefa = null;
-            if (utilizadorAutenticado is Programador)
+            Tarefa tarefa = null; 
+            if (utilizadorAutenticado is Programador) // verificar se o utilizador autenticado é um programador
             {
                 MessageBox.Show("Só um gestor pode criar uma nova tarefa.",
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                frmDetalhesTarefa novaTarefa = new frmDetalhesTarefa(utilizadorAutenticado, tarefa);
+                frmDetalhesTarefa novaTarefa = new frmDetalhesTarefa(utilizadorAutenticado, tarefa); // criar uma nova tarefa
                 novaTarefa.ShowDialog();
             }
 
             List<Tarefa> tarefas = TarefasController.ObterTarefas(); //obter a lista de tarefas da base de dados
-            var tarefasTodo = tarefas.Where(tarefa2 => tarefa2.estadoAtual == EstadoTarefa.ToDo).ToList();
-            var tarefasDoing = tarefas.Where(tarefa2 => tarefa2.estadoAtual == EstadoTarefa.Doing).ToList();
-            var tarefasDone = tarefas.Where(tarefa2 => tarefa2.estadoAtual == EstadoTarefa.Done).ToList();
+            var tarefasTodo = tarefas.Where(tarefa2 => tarefa2.estadoAtual == EstadoTarefa.ToDo).ToList(); // Filtrar tarefas "To Do"
+            var tarefasDoing = tarefas.Where(tarefa2 => tarefa2.estadoAtual == EstadoTarefa.Doing).ToList(); // Filtrar tarefas "Doing"
+            var tarefasDone = tarefas.Where(tarefa2 => tarefa2.estadoAtual == EstadoTarefa.Done).ToList(); // Filtrar tarefas "Done"
             lstTodo.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
             lstDoing.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
             lstDone.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
@@ -83,42 +90,44 @@ namespace iTasks
 
         private void btSetDoing_Click(object sender, EventArgs e)
         {
-            int index = lstTodo.SelectedIndex;
+            int index = lstTodo.SelectedIndex; // Verifica o índice selecionado na lista de tarefas "To Do"
             if (index == -1)
             {
                 MessageBox.Show("Selecione uma tarefa para mudar o estado.",
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            Tarefa tarefaSelecionada = lstTodo.Items[index] as Tarefa;
-            if (tarefaSelecionada == null)
+            Tarefa tarefaSelecionada = lstTodo.Items[index] as Tarefa; // Obtém a tarefa selecionada na lista "To Do"
+            if (tarefaSelecionada == null) 
             {
+                MessageBox.Show("Tarefa selecionada inválida.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             tarefaSelecionada.estadoAtual = EstadoTarefa.Doing;
             tarefaSelecionada.dataRealInicio = DateTime.Now; // Definir a data de início real quando a tarefa é movida para Doing
 
-            TarefasController.AtualizarEstadoTarefa(tarefaSelecionada);
+            TarefasController.AtualizarEstadoTarefa(tarefaSelecionada); // Atualiza o estado da tarefa na base de dados
 
             frmKanban_Load(null, null); // Recarregar a lista de tarefas para refletir a mudança de estado
         }
 
         private void btSetTodo_Click(object sender, EventArgs e)
         {
-            int index = lstDoing.SelectedIndex;
+            int index = lstDoing.SelectedIndex; // Verifica o índice selecionado na lista de tarefas "Doing"
             if (index == -1)
             {
                 MessageBox.Show("Selecione uma tarefa para mudar o estado.",
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            Tarefa tarefaSelecionada = lstDoing.Items[index] as Tarefa;
+            Tarefa tarefaSelecionada = lstDoing.Items[index] as Tarefa; // Obtém a tarefa selecionada na lista "Doing"
             if (tarefaSelecionada == null)
             {
+                MessageBox.Show("Tarefa selecionada inválida.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (tarefaSelecionada.estadoAtual == EstadoTarefa.Done)
+            if (tarefaSelecionada.estadoAtual == EstadoTarefa.Done) // Verifica se a tarefa já está concluída
             {
                 MessageBox.Show("Tarefas concluídas não podem ser reiniciadas.",
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -132,16 +141,17 @@ namespace iTasks
 
         private void btSetDone_Click(object sender, EventArgs e)
         {
-            int index = lstDoing.SelectedIndex;
+            int index = lstDoing.SelectedIndex; // Verifica o índice selecionado na lista de tarefas "Doing"
             if (index == -1)
             {
                 MessageBox.Show("Selecione uma tarefa para mudar o estado.",
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            Tarefa tarefaSelecionada = lstDoing.Items[index] as Tarefa;
+            Tarefa tarefaSelecionada = lstDoing.Items[index] as Tarefa; // Obtém a tarefa selecionada na lista "Doing"
             if (tarefaSelecionada == null)
             {
+                MessageBox.Show("Tarefa selecionada inválida.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             tarefaSelecionada.estadoAtual = EstadoTarefa.Done;
@@ -157,7 +167,7 @@ namespace iTasks
 
         private void btPrevisao_Click(object sender, EventArgs e)
         {
-            int index = lstDoing.SelectedIndex;
+            int index = lstDoing.SelectedIndex; // Verifica o índice selecionado na lista de tarefas "Doing"
             if (index == -1) 
             {
                 MessageBox.Show("Selecione uma tarefa para ver a previsão.",
@@ -166,7 +176,7 @@ namespace iTasks
             }
             else
             {
-                string tarefa = lstDoing.Items[index].ToString();
+                string tarefa = lstDoing.Items[index].ToString(); // Obtém a tarefa selecionada na lista "Doing"
                 // Aqui deve-se calcular a previsão com base na tarefa selecionada
                 // e mostrar a previsão em uma nova janela ou mensagem.
             }
@@ -174,58 +184,62 @@ namespace iTasks
 
         private void gerirUtilizadoresToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (utilizadorAutenticado is Programador)
+            if (utilizadorAutenticado is Programador) // verificar se o utilizador autenticado é um programador
             {
                 MessageBox.Show("Só um gestor pode gerir utilizadores.",
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                frmGereUtilizadores gereUtilizadores = new frmGereUtilizadores();
-                gereUtilizadores.ShowDialog();
+                frmGereUtilizadores gereUtilizadores = new frmGereUtilizadores(); // criar uma nova instância do formulário de gestão de utilizadores
+                gereUtilizadores.ShowDialog();  // mostrar o formulário de gestão de utilizadores
             }
         }
 
         private void gerirTiposDeTarefasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (utilizadorAutenticado is Programador)
+            if (utilizadorAutenticado is Programador) // verificar se o utilizador autenticado é um programador
             {
                 MessageBox.Show("Só um gestor pode gerir tarefas.",
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                frmGereTiposTarefas gereTarefas = new frmGereTiposTarefas();
-                gereTarefas.ShowDialog();
+                frmGereTiposTarefas gereTarefas = new frmGereTiposTarefas(); // criar uma nova instância do formulário de gestão de tipos de tarefas
+                gereTarefas.ShowDialog(); // mostrar o formulário de gestão de tipos de tarefas
             }
         }
 
         private void tarefasTerminadasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmConsultarTarefasConcluidas verTarefasConcluidas = new frmConsultarTarefasConcluidas();
-            verTarefasConcluidas.ShowDialog();
+            frmConsultarTarefasConcluidas verTarefasConcluidas = new frmConsultarTarefasConcluidas(); // criar uma nova instância do formulário de consulta de tarefas concluídas
+            verTarefasConcluidas.ShowDialog(); // mostrar o formulário de consulta de tarefas concluídas
         }
 
         private void tarefasEmCursoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmConsultaTarefasEmCurso verTarefasEmCurso = new frmConsultaTarefasEmCurso();
-            verTarefasEmCurso.ShowDialog();
-        }
+            frmConsultaTarefasEmCurso verTarefasEmCurso = new frmConsultaTarefasEmCurso(); // criar uma nova instância do formulário de consulta de tarefas em curso
+            verTarefasEmCurso.ShowDialog(); // mostrar o formulário de consulta de tarefas em curso
+        } 
 
         private void lstTodo_DoubleClick(object sender, EventArgs e)
         {
-            frmDetalhesTarefa detalhesTarefa = new frmDetalhesTarefa(utilizadorAutenticado, lstTodo.SelectedItem as Tarefa);
+            int index = lstTodo.SelectedIndex; // Verifica o índice selecionado na lista de tarefas "To Do"
+            Tarefa tarefaSelecionada = lstTodo.Items[index] as Tarefa; // Obtém a tarefa selecionada na lista "To Do"
+            frmDetalhesTarefa detalhesTarefa = new frmDetalhesTarefa(utilizadorAutenticado, tarefaSelecionada);
             detalhesTarefa.ShowDialog();
         }
         private void lstDoing_DoubleClick(object sender, EventArgs e)
         {
-            frmDetalhesTarefa detalhesTarefa = new frmDetalhesTarefa(utilizadorAutenticado, lstDoing.SelectedItem as Tarefa);
+            int index = lstDoing.SelectedIndex; // Verifica o índice selecionado na lista de tarefas "Doing"
+            Tarefa tarefaSelecionada = lstDoing.Items[index] as Tarefa; // Obtém a tarefa selecionada na lista "Doing"
+            frmDetalhesTarefa detalhesTarefa = new frmDetalhesTarefa(utilizadorAutenticado, tarefaSelecionada);
             detalhesTarefa.ShowDialog();
         }
         private void lstDone_DoubleClick(object sender, EventArgs e)
         {
-            frmDetalhesTarefa detalhesTarefa = new frmDetalhesTarefa(utilizadorAutenticado, lstDone.SelectedItem as Tarefa);
-            detalhesTarefa.ShowDialog();
+            MessageBox.Show("Tarefas concluídas não podem ser editadas.",
+                "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void utilizadoresToolStripMenuItem_Click(object sender, EventArgs e)
