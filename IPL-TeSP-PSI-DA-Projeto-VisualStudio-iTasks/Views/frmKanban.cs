@@ -23,36 +23,52 @@ namespace iTasks
             InitializeComponent();
             string nome = utilizador.nome;
             label1.Text = $"Bem vindo {nome}!";
-            if(utilizadorAutenticado is Gestor)
+            List<Tarefa> tarefas = TarefasController.ObterTarefasPorUtilizador(utilizadorAutenticado);
+            if(utilizadorAutenticado is Programador)
             {
-                List<Tarefa> tarefas = TarefasController.ObterTarefas(); //obter a lista de tarefas da base de dados
-            }
-            else
-            {
-                List<Tarefa> tarefas = TarefasController.ObterTarefasPorUtilizador(utilizadorAutenticado);
                 btNova.Visible = false; // Ocultar o botão "Nova Tarefa" para programadores
                 btPrevisao.Visible = false; // Ocultar o botão "Previsão" para programadores
+                tarefasEmCursoToolStripMenuItem.Visible = false; // Ocultar o menu de utilizadores para programadores
                 utilizadoresToolStripMenuItem.Visible = false; // Ocultar o menu de utilizadores para programadores
-                listagensToolStripMenuItem.Visible = false; // Ocultar o menu de listagens para programadores
             }
         }
 
         private void frmKanban_Load(object sender, EventArgs e)
         {
             // Carregar a lista de tarefas ao iniciar o formulário
-            List<Tarefa> tarefas = TarefasController.ObterTarefasPorUtilizador(utilizadorAutenticado); //obter a lista de tarefas da base de dados
+            if(utilizadorAutenticado is Programador) // verificar se o utilizador autenticado é um programador
+            {
+                List<Tarefa> tarefas = TarefasController.ObterTarefasPorUtilizador(utilizadorAutenticado);
+                var tarefasTodo = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.ToDo).ToList(); // Filtrar tarefas "To Do"
+                var tarefasDoing = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Doing).ToList(); // Filtrar tarefas "Doing"
+                var tarefasDone = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Done).ToList(); // Filtrar tarefas "Done"
 
-            var tarefasTodo = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.ToDo).ToList(); // Filtrar tarefas "To Do"
-            var tarefasDoing = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Doing).ToList(); // Filtrar tarefas "Doing"
-            var tarefasDone = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Done).ToList(); // Filtrar tarefas "Done"
+                lstTodo.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
+                lstDoing.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
+                lstDone.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
 
-            lstTodo.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
-            lstDoing.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
-            lstDone.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
+                lstTodo.DataSource = tarefasTodo; // Definir a fonte de dados para a lista de tarefas "To Do"
+                lstDoing.DataSource = tarefasDoing; // Definir a fonte de dados para a lista de tarefas "Doing"
+                lstDone.DataSource = tarefasDone; // Definir a fonte de dados para a lista de tarefas "Done"
+                return;
+            }
+            else
+            {
+                List<Tarefa> tarefas = TarefasController.ObterTarefas(); //obter a lista de tarefas da base de dados
+                var tarefasTodo = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.ToDo).ToList(); // Filtrar tarefas "To Do"
+                var tarefasDoing = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Doing).ToList(); // Filtrar tarefas "Doing"
+                var tarefasDone = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Done).ToList(); // Filtrar tarefas "Done"
 
-            lstTodo.DataSource = tarefasTodo; // Definir a fonte de dados para a lista de tarefas "To Do"
-            lstDoing.DataSource = tarefasDoing; // Definir a fonte de dados para a lista de tarefas "Doing"
-            lstDone.DataSource = tarefasDone; // Definir a fonte de dados para a lista de tarefas "Done"
+                lstTodo.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
+                lstDoing.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
+                lstDone.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
+
+                lstTodo.DataSource = tarefasTodo; // Definir a fonte de dados para a lista de tarefas "To Do"
+                lstDoing.DataSource = tarefasDoing; // Definir a fonte de dados para a lista de tarefas "Doing"
+                lstDone.DataSource = tarefasDone; // Definir a fonte de dados para a lista de tarefas "Done"
+            }
+
+            
         }
 
         private void label1_Click(object sender, EventArgs e)

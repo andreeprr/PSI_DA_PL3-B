@@ -15,7 +15,15 @@ namespace iTasks.Controllers
             // Aqui vamos buscar as tarefas associadas ao utilizador pelo IDs
             using (var db = new iTasksContext())
             {
-                return db.Tarefas.Where(tarefa => tarefa.programador.id == utilizador.id).ToList();
+                if (utilizador is Gestor)
+                {
+                    // Se o utilizador for um gestor, vamos buscar as tarefas que ele gere
+                    return db.Tarefas.Where(tarefa => tarefa.gestor.id == utilizador.id).ToList();
+                }
+                else
+                {
+                    return db.Tarefas.Where(tarefa => tarefa.programador.id == utilizador.id).ToList();
+                }
             }
         }
 
@@ -34,6 +42,19 @@ namespace iTasks.Controllers
             using (var db = new iTasksContext())
             {
                 return db.Tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Done).ToList();
+            }
+        }
+
+        public static List<Tarefa> ObterTarefasConcluidasPorProgramador(Utilizador utilizador)
+        {
+            // Aqui vamos buscar as tarefas concluidas
+            using (var db = new iTasksContext())
+            {
+                return db.Tarefas
+                    .Where(tarefa => 
+                    tarefa.estadoAtual == EstadoTarefa.Done &&
+                    tarefa.programador.id == utilizador.id)
+                    .ToList();
             }
         }
 

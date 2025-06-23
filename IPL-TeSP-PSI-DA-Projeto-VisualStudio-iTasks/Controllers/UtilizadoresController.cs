@@ -59,6 +59,15 @@ namespace iTasks.Controllers
             }
         }
 
+        public static List<Programador> ObterProgramadoresPorGestor(Utilizador utilizador)
+        {
+            using (var db = new iTasksContext())
+            {
+                //Devolve a lista de programadores associados ao respetivo gestor
+                return db.Programadores.Where(programador=> programador.gestor.id == utilizador.id).ToList();
+            }
+        }
+
         public static List<Utilizador> ObterProgramadores()
         {
             using (var db = new iTasksContext())

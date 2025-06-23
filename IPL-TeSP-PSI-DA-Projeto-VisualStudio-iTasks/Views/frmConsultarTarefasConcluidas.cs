@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iTasks.Controllers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,7 +25,8 @@ namespace iTasks
 
         private void frmConsultarTarefasConcluidas_Load(object sender, EventArgs e)
         {
-
+            List<Tarefa> tarefasConcluidas = TarefasController.ObterTarefasConcluidas();
+            gvTarefasConcluidas.DataSource = tarefasConcluidas;
         }
     }
 }

@@ -21,10 +21,11 @@ namespace iTasks
             InitializeComponent();
             tarefa_ = tarefa;
             utilizador_ = utilizador;
-            txtIdGestor.Text = tarefa.gestor.id.ToString();
+            var tarefas = TarefasController.ObterTarefas();
+            txtIdGestor.Text = tarefa_.gestor.id.ToString();
             if(tarefa_ == null)
             {
-                var tarefas = TarefasController.ObterTarefas();
+                //var tarefas = TarefasController.ObterTarefas();
                 int maxId;
                 if (tarefas.Any()) 
                 {
@@ -180,7 +181,7 @@ namespace iTasks
             var tiposTarefas = TipotarefaController.ObterTiposTarefas();
             cbTipoTarefa.DataSource = tiposTarefas;
 
-            var programadores = UtilizadoresController.ObterProgramadores();
+            var programadores = UtilizadoresController.ObterProgramadoresPorGestor(utilizador_);
             cbProgramador.DataSource = programadores;
 
             //if (tarefa_ != null)
