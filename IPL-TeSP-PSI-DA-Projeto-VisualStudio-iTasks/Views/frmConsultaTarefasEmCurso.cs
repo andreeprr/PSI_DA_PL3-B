@@ -1,4 +1,6 @@
 ﻿using System;
+using iTasks.Models;
+using iTasks.Controllers;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,6 +22,17 @@ namespace iTasks
         private void btFechar_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void frmConsultaTarefasEmCurso_Load(object sender, EventArgs e)
+        {
+            List<Tarefa> tarefasEmCurso = TarefasController.ObterTarefasEmCurso();
+            gvTarefasEmCurso.DataSource = tarefasEmCurso;
+        }
+
+        private void gvTarefasEmCurso_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

@@ -21,7 +21,7 @@ namespace iTasks
             InitializeComponent();
             tarefa_ = tarefa;
             utilizador_ = utilizador;
-            txtIdGestor.Text = utilizador_.id.ToString();
+            txtIdGestor.Text = tarefa.gestor.id.ToString();
             if(tarefa_ == null)
             {
                 var tarefas = TarefasController.ObterTarefas();
@@ -183,11 +183,11 @@ namespace iTasks
             var programadores = UtilizadoresController.ObterProgramadores();
             cbProgramador.DataSource = programadores;
 
-            if (tarefa_ != null)
-            {
-                cbTipoTarefa.SelectedItem = tiposTarefas.FirstOrDefault(t => t.id == tarefa_.tipoTarefa.id);
-                cbProgramador.SelectedItem = programadores.FirstOrDefault(p => p.id == tarefa_.programador.id);
-            }
+            //if (tarefa_ != null)
+            //{
+            //    cbTipoTarefa.SelectedItem = tiposTarefas.FirstOrDefault(t => t.id == tarefa_.tipoTarefa.id);
+            //    cbProgramador.SelectedItem = programadores.FirstOrDefault(p => p.id == tarefa_.programador.id);
+            //}
         }
     }
 }

@@ -16,26 +16,31 @@ namespace iTasks
 {
     public partial class frmKanban : Form
     {
-        Utilizador utilizadorAutenticado = null;
+        Utilizador utilizadorAutenticado;
         public frmKanban(Utilizador utilizador)
         {
             utilizadorAutenticado = utilizador; 
             InitializeComponent();
             string nome = utilizador.nome;
             label1.Text = $"Bem vindo {nome}!";
-            List<Tarefa> tarefas = TarefasController.ObterTarefasPorUtilizador(utilizadorAutenticado);
-            if(utilizadorAutenticado is Programador)
+            if(utilizadorAutenticado is Gestor)
             {
+                List<Tarefa> tarefas = TarefasController.ObterTarefas(); //obter a lista de tarefas da base de dados
+            }
+            else
+            {
+                List<Tarefa> tarefas = TarefasController.ObterTarefasPorUtilizador(utilizadorAutenticado);
                 btNova.Visible = false; // Ocultar o botão "Nova Tarefa" para programadores
                 btPrevisao.Visible = false; // Ocultar o botão "Previsão" para programadores
                 utilizadoresToolStripMenuItem.Visible = false; // Ocultar o menu de utilizadores para programadores
+                listagensToolStripMenuItem.Visible = false; // Ocultar o menu de listagens para programadores
             }
         }
 
         private void frmKanban_Load(object sender, EventArgs e)
         {
             // Carregar a lista de tarefas ao iniciar o formulário
-            List<Tarefa> tarefas = TarefasController.ObterTarefas(); //obter a lista de tarefas da base de dados
+            List<Tarefa> tarefas = TarefasController.ObterTarefasPorUtilizador(utilizadorAutenticado); //obter a lista de tarefas da base de dados
 
             var tarefasTodo = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.ToDo).ToList(); // Filtrar tarefas "To Do"
             var tarefasDoing = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Doing).ToList(); // Filtrar tarefas "Doing"

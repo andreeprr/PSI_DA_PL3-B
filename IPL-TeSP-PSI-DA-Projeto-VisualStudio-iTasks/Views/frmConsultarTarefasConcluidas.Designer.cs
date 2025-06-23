@@ -60,6 +60,7 @@
             this.Controls.Add(this.gvTarefasConcluidas);
             this.Name = "frmConsultarTarefasConcluidas";
             this.Text = "frmConsultarTarefasConcluidas";
+            this.Load += new System.EventHandler(this.frmConsultarTarefasConcluidas_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gvTarefasConcluidas)).EndInit();
             this.ResumeLayout(false);
 

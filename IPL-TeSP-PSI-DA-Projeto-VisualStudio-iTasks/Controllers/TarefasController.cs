@@ -19,6 +19,24 @@ namespace iTasks.Controllers
             }
         }
 
+        public static List<Tarefa> ObterTarefasEmCurso()
+        {
+            // Aqui vamos buscar as tarefas em curso
+            using (var db = new iTasksContext())
+            {
+                return db.Tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Doing).ToList();
+            }
+        }
+
+        public static List<Tarefa> ObterTarefasConcluidas()
+        {
+            // Aqui vamos buscar as tarefas concluidas
+            using (var db = new iTasksContext())
+            {
+                return db.Tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Done).ToList();
+            }
+        }
+
         public static int tarefasAtivas(Programador programador)
         {
             using (var db = new iTasksContext())
@@ -106,5 +124,7 @@ namespace iTasks.Controllers
                 return db.Tarefas.ToList(); // Devolve a lista de tarefas
             }
         }
+
+        
     }
 }
