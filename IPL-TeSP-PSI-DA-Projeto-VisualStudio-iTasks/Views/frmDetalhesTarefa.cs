@@ -143,7 +143,6 @@ namespace iTasks
                 return;
             }
 
-
         }
         private void frmDetalhesTarefa_Load(object sender, EventArgs e)
         {

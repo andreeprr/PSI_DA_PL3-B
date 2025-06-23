@@ -119,5 +119,61 @@ namespace iTasks.Controllers
                 return false; // Exclusão falhou
             }
         }
+        public static bool AtualizarGestor(Gestor gestorAtualizado)
+        {
+            try
+            {
+                using (var db = new iTasksContext())
+                {
+                    // Busca o gestor existente pelo id
+                    var gestorDb = db.Gestores.FirstOrDefault(g => g.id == gestorAtualizado.id);
+                    if (gestorDb == null)
+                        return false;
+
+                    // Atualiza os campos
+                    gestorDb.nome = gestorAtualizado.nome;
+                    gestorDb.username = gestorAtualizado.username;
+                    gestorDb.password = gestorAtualizado.password;
+                    gestorDb.departamento = gestorAtualizado.departamento;
+                    gestorDb.GereUtilizadores = gestorAtualizado.GereUtilizadores;
+
+                    db.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao atualizar o gestor: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+        public static bool AtualizarProgramador(Programador programadorAtualizado)
+        {
+            try
+            {
+                using (var db = new iTasksContext())
+                {
+                    // Busca o programador existente pelo id
+                    var progDb = db.Programadores.FirstOrDefault(p => p.id == programadorAtualizado.id);
+                    if (progDb == null)
+                        return false;
+
+                    // Atualiza os campos
+                    progDb.nome = programadorAtualizado.nome;
+                    progDb.username = programadorAtualizado.username;
+                    progDb.password = programadorAtualizado.password;
+                    progDb.NivelExperiencia = programadorAtualizado.NivelExperiencia;
+                    progDb.gestor = db.Gestores.FirstOrDefault(g => g.id == programadorAtualizado.gestor.id);
+
+                    db.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao atualizar o programador: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
     }
 }

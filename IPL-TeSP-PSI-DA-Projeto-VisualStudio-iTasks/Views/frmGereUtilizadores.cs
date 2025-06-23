@@ -82,6 +82,9 @@ namespace iTasks
                 GereUtilizadores = chkGereUtilizadores.Checked
             };
 
+            //Chama a função de atualizar o gestor
+            UtilizadoresController.AtualizarGestor(gestor);
+
             //Indica se o gestor foi adicionado com sucesso (true) ou não (false), por isso usamos o bool
             bool verificaGestor = UtilizadoresController.AdicionarGestor(gestor);
             if (verificaGestor == true)
@@ -90,7 +93,6 @@ namespace iTasks
                 //Obtém a lista de gestores da base de dados e popula a ListBox
                 List<Utilizador> gestores = UtilizadoresController.ObterGestores();
                 lstListaGestores.DataSource = gestores;
-                AtualizarComboGestores();
                 return;
             }
             else
@@ -99,12 +101,6 @@ namespace iTasks
                 return;
             }
 
-        }
-        private void AtualizarComboGestores()
-        {
-            cbGestorProg.DataSource = null;
-            cbGestorProg.DataSource = UtilizadoresController.ObterGestores();
-            cbGestorProg.DisplayMember = "nome"; // Ajuste para o campo que você quiser mostrar
         }
 
         private void btGravarProg_Click(object sender, EventArgs e)
@@ -128,6 +124,9 @@ namespace iTasks
                 NivelExperiencia = (NivelExperiencia)cbNivelProg.SelectedItem,
                 gestor = (Gestor)cbGestorProg.SelectedItem
             };
+
+            //Chama a função de atualizar o programador
+            UtilizadoresController.AtualizarProgramador(programador);
 
             // Indica se o programador foi adicionado com sucesso
             bool verificaProg = UtilizadoresController.AdicionarProgramador(programador);
@@ -219,7 +218,6 @@ namespace iTasks
                 // Atualiza a lista
                 lstListaGestores.DataSource = UtilizadoresController.ObterGestores();
                 lstListaProgramadores.DataSource = UtilizadoresController.ObterProgramadores(); // atualiza também os programadores
-                AtualizarComboGestores();
             }
             else
             {
