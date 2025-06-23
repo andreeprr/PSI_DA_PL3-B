@@ -62,11 +62,12 @@ namespace iTasks.Controllers
 
                     tarefaDb.descricao = tarefa.descricao; // Certifica-se de que a descrição está anexada à tarefa
                     tarefaDb.ordemExecucao = tarefa.ordemExecucao; // Certifica-se de que a ordem de execução está anexada à tarefa
-                    tarefaDb.programador = tarefa.programador; // Certifica-se de que o programador está anexado à tarefa
-                    tarefaDb.tipoTarefa = tarefa.tipoTarefa;    // Certifica-se de que o tipo de tarefa está anexado à tarefa
                     tarefaDb.storyPoints = tarefa.storyPoints; // Certifica-se de que os story points estão anexados à tarefa
                     tarefaDb.dataPrevistaInicio = tarefa.dataPrevistaInicio;    // Certifica-se de que a data prevista de início está anexada à tarefa
                     tarefaDb.dataPrevistaFim = tarefa.dataPrevistaFim; // Certifica-se de que a data prevista de fim está anexada à tarefa
+
+                    tarefaDb.programador = db.Programadores.Find(tarefa.programador.id); // Certifica-se de que o programador está anexado à tarefa
+                    tarefaDb.tipoTarefa = db.TipoTarefas.Find(tarefa.tipoTarefa.id); // Certifica-se de que o tipo de tarefa está anexado à tarefa
 
                     db.SaveChanges(); // Certifica-se de que as alterações são salvas no banco de dados
                 }

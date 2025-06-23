@@ -6,9 +6,11 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace iTasks
 {
@@ -217,18 +219,22 @@ namespace iTasks
 
         private void lstTodo_DoubleClick(object sender, EventArgs e)
         {
-            frmDetalhesTarefa detalhesTarefa = new frmDetalhesTarefa(utilizadorAutenticado, lstTodo.SelectedItem as Tarefa);
+            int index = lstTodo.SelectedIndex; // Verifica o índice selecionado na lista de tarefas "To Do"
+            Tarefa tarefaSelecionada = lstTodo.Items[index] as Tarefa; // Obtém a tarefa selecionada na lista "To Do"
+            frmDetalhesTarefa detalhesTarefa = new frmDetalhesTarefa(utilizadorAutenticado, tarefaSelecionada);
             detalhesTarefa.ShowDialog();
         }
         private void lstDoing_DoubleClick(object sender, EventArgs e)
         {
-            frmDetalhesTarefa detalhesTarefa = new frmDetalhesTarefa(utilizadorAutenticado, lstDoing.SelectedItem as Tarefa);
+            int index = lstDoing.SelectedIndex; // Verifica o índice selecionado na lista de tarefas "Doing"
+            Tarefa tarefaSelecionada = lstDoing.Items[index] as Tarefa; // Obtém a tarefa selecionada na lista "Doing"
+            frmDetalhesTarefa detalhesTarefa = new frmDetalhesTarefa(utilizadorAutenticado, tarefaSelecionada);
             detalhesTarefa.ShowDialog();
         }
         private void lstDone_DoubleClick(object sender, EventArgs e)
         {
-            frmDetalhesTarefa detalhesTarefa = new frmDetalhesTarefa(utilizadorAutenticado, lstDone.SelectedItem as Tarefa);
-            detalhesTarefa.ShowDialog();
+            MessageBox.Show("Tarefas concluídas não podem ser editadas.",
+                "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void utilizadoresToolStripMenuItem_Click(object sender, EventArgs e)
