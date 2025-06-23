@@ -84,6 +84,7 @@ namespace iTasks.Controllers
             {
                 using (var db = new iTasksContext()) 
                 {
+                    db.Gestores.Attach(tarefa.gestor); // Certifica-se de que o gestor está anexado à tarefa
                     db.Programadores.Attach(tarefa.programador); // Certifica-se de que o programador está anexado à tarefa
                     db.TipoTarefas.Attach(tarefa.tipoTarefa); // Certifica-se de que o tipo de tarefa está anexado à tarefa
                     db.Tarefas.Add(tarefa);

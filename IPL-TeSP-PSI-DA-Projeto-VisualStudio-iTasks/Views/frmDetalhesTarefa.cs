@@ -15,10 +15,12 @@ namespace iTasks
     public partial class frmDetalhesTarefa : Form
     {
         private Tarefa tarefa_ { get; set; }
+        private Utilizador utilizador_ { get; set; }
         public frmDetalhesTarefa(Utilizador utilizador, Tarefa tarefa)
         {
             InitializeComponent();
             //tarefa = tarefa_;
+            utilizador_ = utilizador;
             txtIdGestor.Text = utilizador.id.ToString();
             if(tarefa == null)
             {
@@ -102,7 +104,7 @@ namespace iTasks
 
         private void btGravar_Click(object sender, EventArgs e)
         {
-            TarefasController.AtualizarTarefa(tarefa_);
+            //TarefasController.AtualizarTarefa(tarefa_);
             if (string.IsNullOrWhiteSpace(txtDesc.Text) || cbTipoTarefa.SelectedItem == null || cbProgramador.SelectedItem == null 
                 || int.Parse(txtOrdem.Text) <= 0 || int.Parse(txtStoryPoints.Text) <= 0 || dtInicio.Value < DateTime.Now || dtInicio.Value < DateTime.Now) 
             {
@@ -121,6 +123,7 @@ namespace iTasks
             var tarefa = new Tarefa
             {
                 descricao = txtDesc.Text,
+                gestor = utilizador_ as Gestor, // Certifica-se de que o gestor está anexado à tarefa 
                 tipoTarefa = (TipoTarefa)cbTipoTarefa.SelectedItem,
                 programador = (Programador)cbProgramador.SelectedItem,
                 ordemExecucao = int.Parse(txtOrdem.Text),
