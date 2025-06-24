@@ -21,11 +21,11 @@ namespace iTasks
             InitializeComponent();
             tarefa_ = tarefa;
             utilizador_ = utilizador;
-            var tarefas = TarefasController.ObterTarefas();
-            txtIdGestor.Text = tarefa_.gestor.id.ToString();
-            if(tarefa_ == null)
+            
+            if(tarefa == null)
             {
-                //var tarefas = TarefasController.ObterTarefas();
+                txtIdGestor.Text = utilizador.id.ToString();
+                var tarefas = TarefasController.ObterTarefas();
                 int maxId;
                 if (tarefas.Any()) 
                 {
@@ -40,49 +40,51 @@ namespace iTasks
                 txtEstado.Text = EstadoTarefa.ToDo.ToString(); // Define o estado inicial da tarefa
                 txtDataCriacao.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"); // Define a data de criação da tarefa
             }
-            else if (tarefa_ != null && utilizador_ is Gestor) 
+            else if (tarefa != null && utilizador_ is Gestor) 
             {
-                txtId.Text = tarefa_.id.ToString();
-                txtEstado.Text = tarefa_.estadoAtual.ToString();
-                if (tarefa_.dataRealInicio != null)
+                txtIdGestor.Text = tarefa.gestor.id.ToString();
+                txtId.Text = tarefa.id.ToString();
+                txtEstado.Text = tarefa.estadoAtual.ToString();
+                if (tarefa.dataRealInicio != null)
                 {
-                    txtDataRealini.Text = tarefa_.dataRealInicio.Value.ToString("dd/MM/yyyy HH:mm:ss");
+                    txtDataRealini.Text = tarefa.dataRealInicio.Value.ToString("dd/MM/yyyy HH:mm:ss");
                 }
-                if (tarefa_.dataRealFim != null)
+                if (tarefa.dataRealFim != null)
                 {
-                    txtdataRealFim.Text = tarefa_.dataRealFim.Value.ToString("dd/MM/yyyy HH:mm:ss");
+                    txtdataRealFim.Text = tarefa.dataRealFim.Value.ToString("dd/MM/yyyy HH:mm:ss");
                 }
-                txtDataCriacao.Text = tarefa_.dataCriacao.ToString("dd/MM/yyyy HH:mm:ss");
-                txtDesc.Text = tarefa_.descricao;
-                cbTipoTarefa.SelectedItem = tarefa_.tipoTarefa;
-                cbProgramador.SelectedItem = tarefa_.programador;
-                txtOrdem.Text = tarefa_.ordemExecucao.ToString();
-                txtStoryPoints.Text = tarefa_.storyPoints.ToString();
-                dtInicio.Value = tarefa_.dataPrevistaInicio;
-                dtFim.Value = tarefa_.dataPrevistaFim;
+                txtDataCriacao.Text = tarefa.dataCriacao.ToString("dd/MM/yyyy HH:mm:ss");
+                txtDesc.Text = tarefa.descricao;
+                cbTipoTarefa.SelectedItem = tarefa.tipoTarefa;
+                cbProgramador.SelectedItem = tarefa.programador;
+                txtOrdem.Text = tarefa.ordemExecucao.ToString();
+                txtStoryPoints.Text = tarefa.storyPoints.ToString();
+                dtInicio.Value = tarefa.dataPrevistaInicio;
+                dtFim.Value = tarefa.dataPrevistaFim;
 
             }
-            else if (tarefa_ != null && utilizador_ is Programador)
+            else if (tarefa != null && utilizador_ is Programador)
             {
+                txtIdGestor.Text = tarefa.gestor.id.ToString();
                 btGravar.Visible = false;
-                txtId.Text = tarefa_.id.ToString();
-                txtEstado.Text = tarefa_.estadoAtual.ToString();
-                if (tarefa_.dataRealInicio != null)
+                txtId.Text = tarefa.id.ToString();
+                txtEstado.Text = tarefa.estadoAtual.ToString();
+                if (tarefa.dataRealInicio != null)
                 {
-                    txtDataRealini.Text = tarefa_.dataRealInicio.Value.ToString("dd/MM/yyyy HH:mm:ss");
+                    txtDataRealini.Text = tarefa.dataRealInicio.Value.ToString("dd/MM/yyyy HH:mm:ss");
                 }
-                if (tarefa_.dataRealFim != null)
+                if (tarefa.dataRealFim != null)
                 {
-                    txtdataRealFim.Text = tarefa_.dataRealFim.Value.ToString("dd/MM/yyyy HH:mm:ss");
+                    txtdataRealFim.Text = tarefa.dataRealFim.Value.ToString("dd/MM/yyyy HH:mm:ss");
                 }
-                txtDataCriacao.Text = tarefa_.dataCriacao.ToString("dd/MM/yyyy HH:mm:ss");
-                txtDesc.Text = tarefa_.descricao;
-                cbTipoTarefa.SelectedItem = tarefa_.tipoTarefa;
-                cbProgramador.SelectedItem = tarefa_.programador;
-                txtOrdem.Text = tarefa_.ordemExecucao.ToString();
-                txtStoryPoints.Text = tarefa_.storyPoints.ToString();
-                dtInicio.Value = tarefa_.dataPrevistaInicio;
-                dtFim.Value = tarefa_.dataPrevistaFim;
+                txtDataCriacao.Text = tarefa.dataCriacao.ToString("dd/MM/yyyy HH:mm:ss");
+                txtDesc.Text = tarefa.descricao;
+                cbTipoTarefa.SelectedItem = tarefa.tipoTarefa;
+                cbProgramador.SelectedItem = tarefa.programador;
+                txtOrdem.Text = tarefa.ordemExecucao.ToString();
+                txtStoryPoints.Text = tarefa.storyPoints.ToString();
+                dtInicio.Value = tarefa.dataPrevistaInicio;
+                dtFim.Value = tarefa.dataPrevistaFim;
 
 
             }
@@ -184,11 +186,15 @@ namespace iTasks
             var programadores = UtilizadoresController.ObterProgramadoresPorGestor(utilizador_);
             cbProgramador.DataSource = programadores;
 
-            //if (tarefa_ != null)
-            //{
-            //    cbTipoTarefa.SelectedItem = tiposTarefas.FirstOrDefault(t => t.id == tarefa_.tipoTarefa.id);
-            //    cbProgramador.SelectedItem = programadores.FirstOrDefault(p => p.id == tarefa_.programador.id);
-            //}
+            // Seleciona automaticamente o tipoTarefa e o programador associados à tarefa
+            if (tarefa_ != null)
+            {
+                if (tarefa_.tipoTarefa != null)
+                    cbTipoTarefa.SelectedItem = tiposTarefas.FirstOrDefault(t => t.id == tarefa_.tipoTarefa.id);
+
+                if (tarefa_.programador != null)
+                    cbProgramador.SelectedItem = programadores.FirstOrDefault(p => p.id == tarefa_.programador.id);
+            }
         }
     }
 }

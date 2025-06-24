@@ -36,39 +36,18 @@ namespace iTasks
         private void frmKanban_Load(object sender, EventArgs e)
         {
             // Carregar a lista de tarefas ao iniciar o formulário
-            if(utilizadorAutenticado is Programador) // verificar se o utilizador autenticado é um programador
-            {
-                List<Tarefa> tarefas = TarefasController.ObterTarefasPorUtilizador(utilizadorAutenticado);
-                var tarefasTodo = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.ToDo).ToList(); // Filtrar tarefas "To Do"
-                var tarefasDoing = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Doing).ToList(); // Filtrar tarefas "Doing"
-                var tarefasDone = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Done).ToList(); // Filtrar tarefas "Done"
+            List<Tarefa> tarefas = TarefasController.ObterTarefasPorUtilizador(utilizadorAutenticado);
+            var tarefasTodo = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.ToDo).ToList(); // Filtrar tarefas "To Do"
+            var tarefasDoing = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Doing).ToList(); // Filtrar tarefas "Doing"
+            var tarefasDone = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Done).ToList(); // Filtrar tarefas "Done"
 
-                lstTodo.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
-                lstDoing.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
-                lstDone.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
+            lstTodo.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
+            lstDoing.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
+            lstDone.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
 
-                lstTodo.DataSource = tarefasTodo; // Definir a fonte de dados para a lista de tarefas "To Do"
-                lstDoing.DataSource = tarefasDoing; // Definir a fonte de dados para a lista de tarefas "Doing"
-                lstDone.DataSource = tarefasDone; // Definir a fonte de dados para a lista de tarefas "Done"
-                return;
-            }
-            else
-            {
-                List<Tarefa> tarefas = TarefasController.ObterTarefas(); //obter a lista de tarefas da base de dados
-                var tarefasTodo = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.ToDo).ToList(); // Filtrar tarefas "To Do"
-                var tarefasDoing = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Doing).ToList(); // Filtrar tarefas "Doing"
-                var tarefasDone = tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Done).ToList(); // Filtrar tarefas "Done"
-
-                lstTodo.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
-                lstDoing.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
-                lstDone.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
-
-                lstTodo.DataSource = tarefasTodo; // Definir a fonte de dados para a lista de tarefas "To Do"
-                lstDoing.DataSource = tarefasDoing; // Definir a fonte de dados para a lista de tarefas "Doing"
-                lstDone.DataSource = tarefasDone; // Definir a fonte de dados para a lista de tarefas "Done"
-            }
-
-            
+            lstTodo.DataSource = tarefasTodo; // Definir a fonte de dados para a lista de tarefas "To Do"
+            lstDoing.DataSource = tarefasDoing; // Definir a fonte de dados para a lista de tarefas "Doing"
+            lstDone.DataSource = tarefasDone; // Definir a fonte de dados para a lista de tarefas "Done"            
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -200,41 +179,25 @@ namespace iTasks
 
         private void gerirUtilizadoresToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (utilizadorAutenticado is Programador) // verificar se o utilizador autenticado é um programador
-            {
-                MessageBox.Show("Só um gestor pode gerir utilizadores.",
-                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                frmGereUtilizadores gereUtilizadores = new frmGereUtilizadores(); // criar uma nova instância do formulário de gestão de utilizadores
-                gereUtilizadores.ShowDialog();  // mostrar o formulário de gestão de utilizadores
-            }
+            frmGereUtilizadores gereUtilizadores = new frmGereUtilizadores(); // criar uma nova instância do formulário de gestão de utilizadores
+            gereUtilizadores.ShowDialog();  // mostrar o formulário de gestão de utilizadores
         }
 
         private void gerirTiposDeTarefasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (utilizadorAutenticado is Programador) // verificar se o utilizador autenticado é um programador
-            {
-                MessageBox.Show("Só um gestor pode gerir tarefas.",
-                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                frmGereTiposTarefas gereTarefas = new frmGereTiposTarefas(); // criar uma nova instância do formulário de gestão de tipos de tarefas
-                gereTarefas.ShowDialog(); // mostrar o formulário de gestão de tipos de tarefas
-            }
+            frmGereTiposTarefas gereTarefas = new frmGereTiposTarefas(); // criar uma nova instância do formulário de gestão de tipos de tarefas
+            gereTarefas.ShowDialog(); // mostrar o formulário de gestão de tipos de tarefas
         }
 
         private void tarefasTerminadasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmConsultarTarefasConcluidas verTarefasConcluidas = new frmConsultarTarefasConcluidas(); // criar uma nova instância do formulário de consulta de tarefas concluídas
+            frmConsultarTarefasConcluidas verTarefasConcluidas = new frmConsultarTarefasConcluidas(utilizadorAutenticado); // criar uma nova instância do formulário de consulta de tarefas concluídas
             verTarefasConcluidas.ShowDialog(); // mostrar o formulário de consulta de tarefas concluídas
         }
 
         private void tarefasEmCursoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmConsultaTarefasEmCurso verTarefasEmCurso = new frmConsultaTarefasEmCurso(); // criar uma nova instância do formulário de consulta de tarefas em curso
+            frmConsultaTarefasEmCurso verTarefasEmCurso = new frmConsultaTarefasEmCurso(utilizadorAutenticado); // criar uma nova instância do formulário de consulta de tarefas em curso
             verTarefasEmCurso.ShowDialog(); // mostrar o formulário de consulta de tarefas em curso
         } 
 

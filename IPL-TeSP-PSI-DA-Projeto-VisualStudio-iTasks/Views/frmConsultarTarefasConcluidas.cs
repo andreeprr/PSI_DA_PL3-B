@@ -1,4 +1,5 @@
 ﻿using iTasks.Controllers;
+using iTasks.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,9 +14,11 @@ namespace iTasks
 {
     public partial class frmConsultarTarefasConcluidas : Form
     {
-        public frmConsultarTarefasConcluidas()
+        Utilizador utilizadorLogado;
+        public frmConsultarTarefasConcluidas(Utilizador utilizador)
         {
             InitializeComponent();
+            utilizadorLogado = utilizador;
         }
 
         private void btFechar_Click(object sender, EventArgs e)
@@ -25,7 +28,7 @@ namespace iTasks
 
         private void frmConsultarTarefasConcluidas_Load(object sender, EventArgs e)
         {
-            List<Tarefa> tarefasConcluidas = TarefasController.ObterTarefasConcluidas();
+            List<Tarefa> tarefasConcluidas = TarefasController.ObterTarefasConcluidas(utilizadorLogado);
             gvTarefasConcluidas.DataSource = tarefasConcluidas;
         }
     }
