@@ -30,6 +30,7 @@ namespace iTasks
                 btPrevisao.Visible = false; // Ocultar o botão "Previsão" para programadores
                 tarefasEmCursoToolStripMenuItem.Visible = false; // Ocultar o menu de utilizadores para programadores
                 utilizadoresToolStripMenuItem.Visible = false; // Ocultar o menu de utilizadores para programadores
+                ficheiroToolStripMenuItem.Visible = false; // Ocultar o menu de ficheiro para programadores
             }
         }
 

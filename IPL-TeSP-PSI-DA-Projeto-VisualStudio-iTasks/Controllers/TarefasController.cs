@@ -43,9 +43,18 @@ namespace iTasks.Controllers
             // Aqui vamos buscar as tarefas concluidas
             using (var db = new iTasksContext())
             {
-                return db.Tarefas.Include("Gestor").Include("Programador").Include("TipoTarefa").Where(tarefa => 
-                tarefa.estadoAtual == EstadoTarefa.Done &&
-                tarefa.gestor.id == utilizador.id).ToList();
+                if (utilizador is Gestor)
+                {
+                    return db.Tarefas.Include("Gestor").Include("Programador").Include("TipoTarefa").Where(tarefa =>
+                        tarefa.estadoAtual == EstadoTarefa.Done &&
+                        tarefa.gestor.id == utilizador.id).ToList();
+                }
+                else
+                {
+                    return db.Tarefas.Include("Gestor").Include("Programador").Include("TipoTarefa").Where(tarefa =>
+                        tarefa.estadoAtual == EstadoTarefa.Done &&
+                        tarefa.programador.id == utilizador.id).ToList();
+                }
             }
         }
 
