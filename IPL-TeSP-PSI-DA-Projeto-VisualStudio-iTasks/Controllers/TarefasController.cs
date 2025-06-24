@@ -18,11 +18,11 @@ namespace iTasks.Controllers
                 if (utilizador is Gestor)
                 {
                     // Se o utilizador for um gestor, vamos buscar as tarefas que ele gere
-                    return db.Tarefas.Where(tarefa => tarefa.gestor.id == utilizador.id).ToList();
+                    return db.Tarefas.Include("Gestor").Include("Programador").Include("TipoTarefa").Where(tarefa => tarefa.gestor.id == utilizador.id).ToList();
                 }
                 else
                 {
-                    return db.Tarefas.Where(tarefa => tarefa.programador.id == utilizador.id).ToList();
+                    return db.Tarefas.Include("Gestor").Include("Programador").Include("TipoTarefa").Where(tarefa => tarefa.programador.id == utilizador.id).ToList();
                 }
             }
         }

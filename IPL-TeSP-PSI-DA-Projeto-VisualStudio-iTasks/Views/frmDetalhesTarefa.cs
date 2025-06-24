@@ -40,51 +40,51 @@ namespace iTasks
                 txtEstado.Text = EstadoTarefa.ToDo.ToString(); // Define o estado inicial da tarefa
                 txtDataCriacao.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"); // Define a data de criação da tarefa
             }
-            else if (tarefa != null && utilizador_ is Gestor) 
+            else if (tarefa_ != null && utilizador_ is Gestor) 
             {
-                txtIdGestor.Text = tarefa.gestor.id.ToString();
-                txtId.Text = tarefa.id.ToString();
-                txtEstado.Text = tarefa.estadoAtual.ToString();
-                if (tarefa.dataRealInicio != null)
+                txtIdGestor.Text = utilizador.id.ToString();
+                txtId.Text = tarefa_.id.ToString();
+                txtEstado.Text = tarefa_.estadoAtual.ToString();
+                if (tarefa_.dataRealInicio != null)
                 {
-                    txtDataRealini.Text = tarefa.dataRealInicio.Value.ToString("dd/MM/yyyy HH:mm:ss");
+                    txtDataRealini.Text = tarefa_.dataRealInicio.Value.ToString("dd/MM/yyyy HH:mm:ss");
                 }
-                if (tarefa.dataRealFim != null)
+                if (tarefa_.dataRealFim != null)
                 {
-                    txtdataRealFim.Text = tarefa.dataRealFim.Value.ToString("dd/MM/yyyy HH:mm:ss");
+                    txtdataRealFim.Text = tarefa_.dataRealFim.Value.ToString("dd/MM/yyyy HH:mm:ss");
                 }
-                txtDataCriacao.Text = tarefa.dataCriacao.ToString("dd/MM/yyyy HH:mm:ss");
-                txtDesc.Text = tarefa.descricao;
-                cbTipoTarefa.SelectedItem = tarefa.tipoTarefa;
-                cbProgramador.SelectedItem = tarefa.programador;
-                txtOrdem.Text = tarefa.ordemExecucao.ToString();
-                txtStoryPoints.Text = tarefa.storyPoints.ToString();
-                dtInicio.Value = tarefa.dataPrevistaInicio;
-                dtFim.Value = tarefa.dataPrevistaFim;
+                txtDataCriacao.Text = tarefa_.dataCriacao.ToString("dd/MM/yyyy HH:mm:ss");
+                txtDesc.Text = tarefa_.descricao;
+                cbTipoTarefa.SelectedItem = tarefa_.tipoTarefa;
+                cbProgramador.SelectedItem = tarefa_.programador;
+                txtOrdem.Text = tarefa_.ordemExecucao.ToString();
+                txtStoryPoints.Text = tarefa_.storyPoints.ToString();
+                dtInicio.Value = tarefa_.dataPrevistaInicio;
+                dtFim.Value = tarefa_.dataPrevistaFim;
 
             }
-            else if (tarefa != null && utilizador_ is Programador)
+            else if (tarefa_ != null && utilizador_ is Programador)
             {
-                txtIdGestor.Text = tarefa.gestor.id.ToString();
+                txtIdGestor.Text = tarefa_.gestor.id.ToString();
                 btGravar.Visible = false;
-                txtId.Text = tarefa.id.ToString();
-                txtEstado.Text = tarefa.estadoAtual.ToString();
-                if (tarefa.dataRealInicio != null)
+                txtId.Text = tarefa_.id.ToString();
+                txtEstado.Text = tarefa_.estadoAtual.ToString();
+                if (tarefa_.dataRealInicio != null)
                 {
-                    txtDataRealini.Text = tarefa.dataRealInicio.Value.ToString("dd/MM/yyyy HH:mm:ss");
+                    txtDataRealini.Text = tarefa_.dataRealInicio.Value.ToString("dd/MM/yyyy HH:mm:ss");
                 }
-                if (tarefa.dataRealFim != null)
+                if (tarefa_.dataRealFim != null)
                 {
-                    txtdataRealFim.Text = tarefa.dataRealFim.Value.ToString("dd/MM/yyyy HH:mm:ss");
+                    txtdataRealFim.Text = tarefa_.dataRealFim.Value.ToString("dd/MM/yyyy HH:mm:ss");
                 }
-                txtDataCriacao.Text = tarefa.dataCriacao.ToString("dd/MM/yyyy HH:mm:ss");
-                txtDesc.Text = tarefa.descricao;
-                cbTipoTarefa.SelectedItem = tarefa.tipoTarefa;
-                cbProgramador.SelectedItem = tarefa.programador;
-                txtOrdem.Text = tarefa.ordemExecucao.ToString();
-                txtStoryPoints.Text = tarefa.storyPoints.ToString();
-                dtInicio.Value = tarefa.dataPrevistaInicio;
-                dtFim.Value = tarefa.dataPrevistaFim;
+                txtDataCriacao.Text = tarefa_.dataCriacao.ToString("dd/MM/yyyy HH:mm:ss");
+                txtDesc.Text = tarefa_.descricao;
+                cbTipoTarefa.SelectedItem = tarefa_.tipoTarefa;
+                cbProgramador.SelectedItem = tarefa_.programador;
+                txtOrdem.Text = tarefa_.ordemExecucao.ToString();
+                txtStoryPoints.Text = tarefa_.storyPoints.ToString();
+                dtInicio.Value = tarefa_.dataPrevistaInicio;
+                dtFim.Value = tarefa_.dataPrevistaFim;
 
 
             }
@@ -114,14 +114,6 @@ namespace iTasks
                 return;
             }
 
-            int tarefasAtivas = TarefasController.tarefasAtivas((Programador)cbProgramador.SelectedItem);
-
-            if (tarefasAtivas >= 2)
-            {
-                MessageBox.Show("Este programador já tem 2 tarefas atribuídas.", "Limite atingido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return; // Não permite atribuir mais tarefas
-            }
-
             //Verifica se existe alguma tarefa para saber se atualiza ou se cria uma nova
             if(tarefa_ != null)
             {
@@ -133,9 +125,8 @@ namespace iTasks
                 tarefa_.dataPrevistaInicio = dtInicio.Value;
                 tarefa_.dataPrevistaFim = dtFim.Value;
                 bool tarefaAtualizada = TarefasController.AtualizarTarefa(tarefa_);
-                if (tarefaAtualizada == true)
+                if (tarefaAtualizada)
                 {
-
                     MessageBox.Show("Tarefa atualizada com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Close();
                     return;
@@ -148,6 +139,14 @@ namespace iTasks
             } 
             else
             {
+                int tarefasAtivas = TarefasController.tarefasAtivas((Programador)cbProgramador.SelectedItem);
+
+                if (tarefasAtivas >= 2)
+                {
+                    MessageBox.Show("Este programador já tem 2 tarefas atribuídas.", "Limite atingido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return; // Não permite atribuir mais tarefas
+                }
+                // Cria uma nova tarefa
                 var tarefa = new Tarefa
                 {
                     descricao = txtDesc.Text,
@@ -194,6 +193,9 @@ namespace iTasks
 
                 if (tarefa_.programador != null)
                     cbProgramador.SelectedItem = programadores.FirstOrDefault(p => p.id == tarefa_.programador.id);
+
+                if(tarefa_.gestor != null)
+                    txtIdGestor.Text = tarefa_.gestor.id.ToString();
             }
         }
     }

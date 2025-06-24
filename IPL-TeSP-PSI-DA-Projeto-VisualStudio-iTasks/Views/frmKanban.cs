@@ -69,13 +69,16 @@ namespace iTasks
                 novaTarefa.ShowDialog();
             }
 
-            List<Tarefa> tarefas = TarefasController.ObterTarefas(); //obter a lista de tarefas da base de dados
+            List<Tarefa> tarefas = TarefasController.ObterTarefasPorUtilizador(utilizadorAutenticado); //obter a lista de tarefas da base de dados
+
             var tarefasTodo = tarefas.Where(tarefa2 => tarefa2.estadoAtual == EstadoTarefa.ToDo).ToList(); // Filtrar tarefas "To Do"
             var tarefasDoing = tarefas.Where(tarefa2 => tarefa2.estadoAtual == EstadoTarefa.Doing).ToList(); // Filtrar tarefas "Doing"
             var tarefasDone = tarefas.Where(tarefa2 => tarefa2.estadoAtual == EstadoTarefa.Done).ToList(); // Filtrar tarefas "Done"
+
             lstTodo.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
             lstDoing.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
             lstDone.DataSource = null; // Limpar a fonte de dados antes de definir uma nova
+
             lstTodo.DataSource = tarefasTodo; // Definir a fonte de dados para a lista de tarefas "To Do"
             lstDoing.DataSource = tarefasDoing; // Definir a fonte de dados para a lista de tarefas "Doing"
             lstDone.DataSource = tarefasDone; // Definir a fonte de dados para a lista de tarefas "Done"
