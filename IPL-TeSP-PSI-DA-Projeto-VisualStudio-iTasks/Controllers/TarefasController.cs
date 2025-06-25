@@ -15,25 +15,63 @@ namespace iTasks.Controllers
             // Aqui vamos buscar as tarefas associadas ao utilizador pelo IDs
             using (var db = new iTasksContext())
             {
-                return db.Tarefas.Where(tarefa => tarefa.programador.id == utilizador.id).ToList();
+                if (utilizador is Gestor)
+                {
+                    // Se o utilizador for um gestor, vamos buscar as tarefas que ele gere
+                    return db.Tarefas.Include("Gestor").Include("Programador").Include("TipoTarefa").Where(tarefa => tarefa.gestor.id == utilizador.id).ToList();
+                }
+                else
+                {
+                    return db.Tarefas.Include("Gestor").Include("Programador").Include("TipoTarefa").Where(tarefa => tarefa.programador.id == utilizador.id).ToList();
+                }
             }
         }
 
-        public static List<Tarefa> ObterTarefasEmCurso()
+        public static List<Tarefa> ObterTarefasEmCurso(Utilizador utilizador)
         {
-            // Aqui vamos buscar as tarefas em curso
+            // Aqui vamos buscar as tarefas em curso e ToDo
             using (var db = new iTasksContext())
             {
-                return db.Tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Doing).ToList();
+                return db.Tarefas.Include("Gestor").Include("Programador").Include("TipoTarefa").Where(tarefa => 
+                tarefa.estadoAtual == EstadoTarefa.Doing &&
+                tarefa.estadoAtual == EstadoTarefa.ToDo &&
+                tarefa.gestor.id == utilizador.id).ToList();
             }
         }
 
-        public static List<Tarefa> ObterTarefasConcluidas()
+        public static List<Tarefa> ObterTarefasConcluidas(Utilizador utilizador)
         {
             // Aqui vamos buscar as tarefas concluidas
             using (var db = new iTasksContext())
             {
-                return db.Tarefas.Where(tarefa => tarefa.estadoAtual == EstadoTarefa.Done).ToList();
+                if (utilizador is Gestor)
+                {
+                    return db.Tarefas.Include("Gestor").Include("Programador").Include("TipoTarefa").Where(tarefa =>
+                        tarefa.estadoAtual == EstadoTarefa.Done &&
+                        tarefa.gestor.id == utilizador.id).ToList();
+                }
+                else
+                {
+                    return db.Tarefas.Include("Gestor").Include("Programador").Include("TipoTarefa").Where(tarefa =>
+                        tarefa.estadoAtual == EstadoTarefa.Done &&
+                        tarefa.programador.id == utilizador.id).ToList();
+                }
+            }
+        }
+
+        public static List<Tarefa> ObterTarefasConcluidasPorProgramador(Utilizador utilizador)
+        {
+            // Aqui vamos buscar as tarefas concluidas
+            using (var db = new iTasksContext())
+            {
+                return db.Tarefas
+                    .Include("Gestor")
+                    .Include("Programador")
+                    .Include("TipoTarefa")
+                    .Where(tarefa => 
+                    tarefa.estadoAtual == EstadoTarefa.Done &&
+                    tarefa.programador.id == utilizador.id)
+                    .ToList();
             }
         }
 
@@ -121,7 +159,7 @@ namespace iTasks.Controllers
         {
             using (var db = new iTasksContext()) 
             {
-                return db.Tarefas.ToList(); // Devolve a lista de tarefas
+                return db.Tarefas.Include("gestor").Include("tipoTarefa").Include("programador").ToList(); // Devolve a lista de tarefas
             }
         }
 

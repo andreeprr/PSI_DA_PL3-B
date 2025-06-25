@@ -21,9 +21,10 @@ namespace iTasks
             InitializeComponent();
             tarefa_ = tarefa;
             utilizador_ = utilizador;
-            txtIdGestor.Text = tarefa.gestor.id.ToString();
-            if(tarefa_ == null)
+            
+            if(tarefa == null)
             {
+                txtIdGestor.Text = utilizador.id.ToString();
                 var tarefas = TarefasController.ObterTarefas();
                 int maxId;
                 if (tarefas.Any()) 
@@ -41,6 +42,7 @@ namespace iTasks
             }
             else if (tarefa_ != null && utilizador_ is Gestor) 
             {
+                txtIdGestor.Text = utilizador.id.ToString();
                 txtId.Text = tarefa_.id.ToString();
                 txtEstado.Text = tarefa_.estadoAtual.ToString();
                 if (tarefa_.dataRealInicio != null)
@@ -63,6 +65,7 @@ namespace iTasks
             }
             else if (tarefa_ != null && utilizador_ is Programador)
             {
+                txtIdGestor.Text = tarefa_.gestor.id.ToString();
                 btGravar.Visible = false;
                 txtId.Text = tarefa_.id.ToString();
                 txtEstado.Text = tarefa_.estadoAtual.ToString();
@@ -111,14 +114,6 @@ namespace iTasks
                 return;
             }
 
-            int tarefasAtivas = TarefasController.tarefasAtivas((Programador)cbProgramador.SelectedItem);
-
-            if (tarefasAtivas >= 2)
-            {
-                MessageBox.Show("Este programador já tem 2 tarefas atribuídas.", "Limite atingido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return; // Não permite atribuir mais tarefas
-            }
-
             //Verifica se existe alguma tarefa para saber se atualiza ou se cria uma nova
             if(tarefa_ != null)
             {
@@ -130,9 +125,8 @@ namespace iTasks
                 tarefa_.dataPrevistaInicio = dtInicio.Value;
                 tarefa_.dataPrevistaFim = dtFim.Value;
                 bool tarefaAtualizada = TarefasController.AtualizarTarefa(tarefa_);
-                if (tarefaAtualizada == true)
+                if (tarefaAtualizada)
                 {
-
                     MessageBox.Show("Tarefa atualizada com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Close();
                     return;
@@ -145,6 +139,14 @@ namespace iTasks
             } 
             else
             {
+                int tarefasAtivas = TarefasController.tarefasAtivas((Programador)cbProgramador.SelectedItem);
+
+                if (tarefasAtivas >= 2)
+                {
+                    MessageBox.Show("Este programador já tem 2 tarefas atribuídas.", "Limite atingido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return; // Não permite atribuir mais tarefas
+                }
+                // Cria uma nova tarefa
                 var tarefa = new Tarefa
                 {
                     descricao = txtDesc.Text,
@@ -179,14 +181,21 @@ namespace iTasks
             var tiposTarefas = TipotarefaController.ObterTiposTarefas();
             cbTipoTarefa.DataSource = tiposTarefas;
 
-            var programadores = UtilizadoresController.ObterProgramadores();
+            var programadores = UtilizadoresController.ObterProgramadoresPorGestor(utilizador_);
             cbProgramador.DataSource = programadores;
 
-            //if (tarefa_ != null)
-            //{
-            //    cbTipoTarefa.SelectedItem = tiposTarefas.FirstOrDefault(t => t.id == tarefa_.tipoTarefa.id);
-            //    cbProgramador.SelectedItem = programadores.FirstOrDefault(p => p.id == tarefa_.programador.id);
-            //}
+            // Seleciona automaticamente o tipoTarefa e o programador associados à tarefa
+            if (tarefa_ != null)
+            {
+                if (tarefa_.tipoTarefa != null)
+                    cbTipoTarefa.SelectedItem = tiposTarefas.FirstOrDefault(t => t.id == tarefa_.tipoTarefa.id);
+
+                if (tarefa_.programador != null)
+                    cbProgramador.SelectedItem = programadores.FirstOrDefault(p => p.id == tarefa_.programador.id);
+
+                if(tarefa_.gestor != null)
+                    txtIdGestor.Text = tarefa_.gestor.id.ToString();
+            }
         }
     }
 }

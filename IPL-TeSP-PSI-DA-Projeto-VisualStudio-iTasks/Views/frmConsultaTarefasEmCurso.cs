@@ -14,9 +14,11 @@ namespace iTasks
 {
     public partial class frmConsultaTarefasEmCurso : Form
     {
-        public frmConsultaTarefasEmCurso()
+        Utilizador utilizadorLogado;
+        public frmConsultaTarefasEmCurso(Utilizador utilizador)
         {
             InitializeComponent();
+            utilizadorLogado = utilizador;
         }
 
         private void btFechar_Click(object sender, EventArgs e)
@@ -26,7 +28,7 @@ namespace iTasks
 
         private void frmConsultaTarefasEmCurso_Load(object sender, EventArgs e)
         {
-            List<Tarefa> tarefasEmCurso = TarefasController.ObterTarefasEmCurso();
+            List<Tarefa> tarefasEmCurso = TarefasController.ObterTarefasEmCurso(utilizadorLogado);
             gvTarefasEmCurso.DataSource = tarefasEmCurso;
         }
 
