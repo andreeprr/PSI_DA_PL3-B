@@ -10,7 +10,14 @@ Este projeto consiste na criação de uma aplicação de registo e organização
 1 - Faça download do projeto pelo GitHub, ou se preferir pelo Git Bash, cole este comando no seu bash:  
   git clone https://github.com/andreprr/Projeto-MDS-DA  
   
-2 - Após o download do projeto, execute o projeto uma vez para injetar os dados iniciais e feche. 
+2 - Após o download do projeto, execute o projeto uma vez para injetar os dados iniciais.
+
+3 - Pode dar login com as seguintes credenciais para entrar como gestor:
+
+username: manuel123 
+password:password456 
+
+Depois pode navegar à vontade e criar o seu próprio login. 
 
 3 - Volte a iniciar e tudo pronto para utilizar!
 
