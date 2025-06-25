@@ -166,18 +166,23 @@ namespace iTasks
 
         private void btPrevisao_Click(object sender, EventArgs e)
         {
-            int index = lstDoing.SelectedIndex; // Verifica o índice selecionado na lista de tarefas "Doing"
-            if (index == -1) 
+            if (lstTodo.Items.Count == 0) 
             {
-                MessageBox.Show("Selecione uma tarefa para ver a previsão.",
+                MessageBox.Show("Sem tarefas para ver a previsão.",
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             else
             {
-                string tarefa = lstDoing.Items[index].ToString(); // Obtém a tarefa selecionada na lista "Doing"
-                // Aqui deve-se calcular a previsão com base na tarefa selecionada
-                // e mostrar a previsão em uma nova janela ou mensagem.
+                List<Tarefa> tarefas = new List<Tarefa>();
+                foreach (Tarefa tarefa in lstTodo.Items)
+                {
+                    tarefas.Add(tarefa); // Adiciona as tarefas "To Do" à lista de tarefas
+                }
+                double previsaoHoras = TarefasController.PrevisaoConclusaoTarefas(tarefas);
+
+                MessageBox.Show($"Tempo previsto para concluir todas as tarefas 'To Do': {previsaoHoras:F1} horas.",
+                    "Previsão", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -240,6 +245,20 @@ namespace iTasks
 
         }
 
-        
+        private void exportarParaCSVToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "CSV files (*.csv)|*.csv";
+                sfd.Title = "Exportar tarefas concluídas";
+                sfd.FileName = "tarefas_concluidas.csv";
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    bool sucesso = TarefasController.ExportarTarefasConcluidasParaCSV(utilizadorAutenticado, sfd.FileName);
+                    if (sucesso)
+                        MessageBox.Show("Exportação concluída com sucesso!", "Exportar CSV", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
     }
 }

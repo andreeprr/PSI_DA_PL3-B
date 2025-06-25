@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -163,6 +165,76 @@ namespace iTasks.Controllers
             }
         }
 
+        public static bool ExportarTarefasConcluidasParaCSV(Utilizador utilizador, string caminhoArquivo)
+        {
+            try
+            {
+                using (var db = new iTasksContext())
+                {
+                    // Busca tarefas concluídas do gestor
+                    var tarefas = db.Tarefas
+                        .Include("gestor")
+                        .Include("programador")
+                        .Include("tipoTarefa")
+                        .Where(t => t.estadoAtual == EstadoTarefa.Done && t.gestor.id == utilizador.id)
+                        .ToList();
+
+                    using (var writer = new StreamWriter(caminhoArquivo, false, Encoding.UTF8))
+                    {
+                        // Cabeçalho
+                        writer.WriteLine("Programador;Descricao;DataPrevisaoInicio;DataPrevisaoFim;DataPrevista;TipoTarefa;DataRealInicio;DataRealFim");
+
+                        foreach (var t in tarefas)
+                        {
+                            string linha = $"{t.programador.nome};{t.descricao};" +
+                                $"{t.dataPrevistaInicio.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture)};" +
+                                $"{t.dataPrevistaFim.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture)};" +
+                                $"{t.dataCriacao.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture)};" +
+                                $"{t.tipoTarefa};" +
+                                $"{t.dataRealInicio?.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture)};" +
+                                $"{t.dataRealFim?.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture)}";
+                            writer.WriteLine(linha);
+                        }
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao exportar CSV: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+        public static double PrevisaoConclusaoTarefas(List<Tarefa> todasTarefas)
+        {
+            var concluidasPorStoryPts = todasTarefas
+                .Where(t=> t.estadoAtual == EstadoTarefa.Done && t.dataRealInicio.HasValue && t.dataRealFim.HasValue)
+                .GroupBy(t => t.storyPoints)
+                .ToDictionary(
+                g=> g.Key,
+                g => g.Average(t => (t.dataRealFim.Value - t.dataRealInicio.Value).TotalHours));
+
+            var tarefasToDo = todasTarefas
+                .Where(t => t.estadoAtual == EstadoTarefa.ToDo).ToList();
+
+            double somaPrevisao = 0;
+
+            foreach (var tarefa in tarefasToDo)
+            {
+                if (concluidasPorStoryPts.ContainsKey(tarefa.storyPoints))
+                {
+                    somaPrevisao += concluidasPorStoryPts[tarefa.storyPoints];
+                }
+                else if (concluidasPorStoryPts.Count > 0)
+                {
+                    // Procura a média do StoryPoints mais próximo
+                    var spMaisProximo = concluidasPorStoryPts.Keys.OrderBy(sp => Math.Abs(sp - tarefa.storyPoints)).First();
+                    somaPrevisao += concluidasPorStoryPts[spMaisProximo];
+                }
+            }
+
+            return somaPrevisao;
+        }
         
     }
 }
