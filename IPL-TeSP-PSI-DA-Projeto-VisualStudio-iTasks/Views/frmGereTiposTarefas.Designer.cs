@@ -35,6 +35,8 @@
             this.txtId = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btGravar = new System.Windows.Forms.Button();
+            this.btEliminarTipoTarefa = new System.Windows.Forms.Button();
+            this.btLimpar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,6 +58,7 @@
             this.lstLista.Name = "lstLista";
             this.lstLista.Size = new System.Drawing.Size(268, 366);
             this.lstLista.TabIndex = 0;
+            this.lstLista.SelectedIndexChanged += new System.EventHandler(this.lstLista_SelectedIndexChanged);
             // 
             // txtDesc
             // 
@@ -92,7 +95,7 @@
             // 
             // btGravar
             // 
-            this.btGravar.Location = new System.Drawing.Point(506, 95);
+            this.btGravar.Location = new System.Drawing.Point(359, 95);
             this.btGravar.Name = "btGravar";
             this.btGravar.Size = new System.Drawing.Size(139, 23);
             this.btGravar.TabIndex = 31;
@@ -100,11 +103,33 @@
             this.btGravar.UseVisualStyleBackColor = true;
             this.btGravar.Click += new System.EventHandler(this.btGravar_Click);
             // 
+            // btEliminarTipoTarefa
+            // 
+            this.btEliminarTipoTarefa.Location = new System.Drawing.Point(506, 95);
+            this.btEliminarTipoTarefa.Name = "btEliminarTipoTarefa";
+            this.btEliminarTipoTarefa.Size = new System.Drawing.Size(139, 23);
+            this.btEliminarTipoTarefa.TabIndex = 31;
+            this.btEliminarTipoTarefa.Text = "Eliminar TipoTarefa";
+            this.btEliminarTipoTarefa.UseVisualStyleBackColor = true;
+            this.btEliminarTipoTarefa.Click += new System.EventHandler(this.btEliminarTipoTarefa_Click);
+            // 
+            // btLimpar
+            // 
+            this.btLimpar.Location = new System.Drawing.Point(359, 124);
+            this.btLimpar.Name = "btLimpar";
+            this.btLimpar.Size = new System.Drawing.Size(286, 23);
+            this.btLimpar.TabIndex = 32;
+            this.btLimpar.Text = "Limpar";
+            this.btLimpar.UseVisualStyleBackColor = true;
+            this.btLimpar.Click += new System.EventHandler(this.btLimpar_Click);
+            // 
             // frmGereTiposTarefas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(664, 404);
+            this.Controls.Add(this.btLimpar);
+            this.Controls.Add(this.btEliminarTipoTarefa);
             this.Controls.Add(this.btGravar);
             this.Controls.Add(this.txtDesc);
             this.Controls.Add(this.label4);
@@ -129,5 +154,7 @@
         private System.Windows.Forms.TextBox txtId;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btGravar;
+        private System.Windows.Forms.Button btEliminarTipoTarefa;
+        private System.Windows.Forms.Button btLimpar;
     }
 }

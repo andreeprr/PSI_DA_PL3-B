@@ -38,5 +38,55 @@ namespace iTasks.Controllers
                 return db.TipoTarefas.ToList();
             }
         }
+
+        public static bool EliminarTipoTarefa(TipoTarefa tipoTarefa)
+        {
+            try
+            {
+                using (var db = new iTasksContext())
+                {
+                    // Anexa o tipo de tarefa ao contexto, caso não esteja
+                    db.TipoTarefas.Attach(tipoTarefa);
+                    // Procura as tarefas associados a este tipo de tarefa
+                    var tarefasAssociadas = db.Tarefas.Where(t => t.tipoTarefa.id == tipoTarefa.id).ToList();
+                    // Remove as tarefas associadas
+                    db.Tarefas.RemoveRange(tarefasAssociadas);
+                    //Remove o tipo de tarefa
+                    db.TipoTarefas.Remove(tipoTarefa);
+                    db.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao eliminar tipo de tarefa: {ex.Message}",
+                    "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        public static bool AtualizarTipoTarefa(TipoTarefa tipoTarefa)
+        {
+            try
+            {
+                using (var db = new iTasksContext())
+                {
+                    var tipoTarefaDb = db.TipoTarefas.FirstOrDefault(t => t.id == tipoTarefa.id);
+                    if (tipoTarefaDb == null)
+                        return false;
+
+                    tipoTarefaDb.nome = tipoTarefa.nome; // Certifica-se de que o nome é atualizado
+
+                    db.SaveChanges(); // Certifica-se de que as alterações são salvas na base de dados
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao editar tipo de tarefa: {ex.Message}",
+                    "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
     }
 }
