@@ -50,6 +50,63 @@ namespace iTasks.Controllers
             }
         }
 
+        public static bool AtualizarGestor(Gestor gestor)
+        {
+            try
+            {
+                using (var db = new iTasksContext())
+                {
+                    var gestorDb = db.Gestores.FirstOrDefault(g => g.id == gestor.id);
+                    if (gestorDb == null)
+                        return false;
+
+                    gestorDb.nome = gestor.nome; 
+                    gestorDb.username = gestor.username; 
+                    gestorDb.password = gestor.password; 
+                    gestorDb.departamento = gestor.departamento; 
+                    gestorDb.GereUtilizadores = gestor.GereUtilizadores; 
+
+
+                    db.SaveChanges(); // Certifica-se de que as alterações são salvas na base de dados
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao atualizar gestor: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        public static bool AtualizarProgramador(Programador programador)
+        {
+            try
+            {
+                using (var db = new iTasksContext())
+                {
+                    var programadorDb = db.Programadores.FirstOrDefault(p => p.id == programador.id);
+                    if (programadorDb == null)
+                        return false;
+
+                    programadorDb.nome = programador.nome; 
+                    programadorDb.username = programador.username; 
+                    programadorDb.password = programador.password; 
+                    programadorDb.NivelExperiencia = programador.NivelExperiencia; 
+
+                    programadorDb.gestor = db.Gestores.Find(programador.gestor.id);
+
+
+                    db.SaveChanges(); // Certifica-se de que as alterações são salvas na base de dados
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao atualizar programador: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
         public static List<Utilizador> ObterGestores()
         {
             using (var db = new iTasksContext())
@@ -73,7 +130,7 @@ namespace iTasks.Controllers
             using (var db = new iTasksContext())
             {
                 //Devolve a lista de programadores
-                return db.Programadores.ToList<Utilizador>();
+                return db.Programadores.Include("Gestor").ToList<Utilizador>();
             }
         }
 

@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace iTasks
 {
     public partial class frmGereUtilizadores : Form
     {
+        Programador utilizadorSelecionado;
+        Gestor utilizadorSelecionado2;
         public frmGereUtilizadores()
         {
             InitializeComponent();
@@ -55,8 +58,13 @@ namespace iTasks
                 txtUsernameProg.Text = programador.username;
                 txtPasswordProg.Text = programador.password;
                 cbNivelProg.SelectedItem = programador.NivelExperiencia;
-                cbGestorProg.SelectedItem = programador.gestor;
-            }else
+                //cbGestorProg.SelectedItem = programador.gestor;
+
+                cbGestorProg.ValueMember = "id"; // Define o valor a ser usado como identificador
+                cbGestorProg.DisplayMember = "nome"; // Define o que será exibido na ComboBox
+                cbGestorProg.SelectedValue = programador.gestor.id; // Seleciona o gestor associado ao programador
+            }
+            else
             {
                 LimparCamposProgramador();
             }
@@ -72,39 +80,79 @@ namespace iTasks
                 return;
             };
 
-            //Criação do objeto Gestor com os dados do formulário
-            var gestor = new Gestor
+            int index = lstListaGestores.SelectedIndex;
+            if (index >= 0)
             {
-                nome = txtNomeGestor.Text,
-                username = txtUsernameGestor.Text,
-                password = txtPasswordGestor.Text,
-                departamento = (Departamento)cbDepartamento.SelectedItem,
-                GereUtilizadores = chkGereUtilizadores.Checked
-            };
-
-            //Indica se o gestor foi adicionado com sucesso (true) ou não (false), por isso usamos o bool
-            bool verificaGestor = UtilizadoresController.AdicionarGestor(gestor);
-            if (verificaGestor == true)
-            {
-                MessageBox.Show("Gestor criado com sucesso");
-                //Obtém a lista de gestores da base de dados e popula a ListBox
-                List<Utilizador> gestores = UtilizadoresController.ObterGestores();
-                lstListaGestores.DataSource = gestores;
-                AtualizarComboGestores();
-                return;
+                utilizadorSelecionado2 = lstListaGestores.Items[index] as Gestor;
             }
             else
             {
-                MessageBox.Show("Erro ! Não foi possível criar o gestor");
-                return;
+                utilizadorSelecionado2 = null;
             }
+
+            if (utilizadorSelecionado2 == null)
+            {
+
+                //Criação do objeto Gestor com os dados do formulário
+                var gestor = new Gestor
+                {
+                    nome = txtNomeGestor.Text,
+                    username = txtUsernameGestor.Text,
+                    password = txtPasswordGestor.Text,
+                    departamento = (Departamento)cbDepartamento.SelectedItem,
+                    GereUtilizadores = chkGereUtilizadores.Checked
+                };
+
+                //Indica se o gestor foi adicionado com sucesso (true) ou não (false), por isso usamos o bool
+                bool verificaGestor = UtilizadoresController.AdicionarGestor(gestor);
+                if (verificaGestor == true)
+                {
+                    MessageBox.Show("Gestor criado com sucesso");
+                    //Obtém a lista de gestores da base de dados e popula a ListBox
+                    List<Utilizador> gestores = UtilizadoresController.ObterGestores();
+                    lstListaGestores.DataSource = gestores;
+                    AtualizarComboGestores();
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show("Erro ! Não foi possível criar o gestor");
+                    return;
+                }
+            }
+            else
+            {
+                utilizadorSelecionado2.nome = txtNomeProg.Text;
+                utilizadorSelecionado2.username = txtUsernameProg.Text;
+                utilizadorSelecionado2.password = txtPasswordProg.Text;
+                utilizadorSelecionado2.NivelExperiencia = (NivelExperiencia)cbNivelProg.SelectedItem;
+                utilizadorSelecionado2.gestor = (Gestor)cbGestorProg.SelectedItem;
+
+                bool utilizadorAtualizado = UtilizadoresController.AtualizarProgramador(utilizadorSelecionado2);
+
+                // Verifica se o programador foi atualizado com sucesso
+                if (utilizadorAtualizado)
+                {
+                    MessageBox.Show("Programador atualizado com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    List<Utilizador> gestores = UtilizadoresController.ObterGestores();
+                    lstListaGestores.DataSource = null;
+                    lstListaGestores.DataSource = gestores;
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show("Erro! Não foi possível atualizar o programador", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
+            
 
         }
         private void AtualizarComboGestores()
         {
             cbGestorProg.DataSource = null;
             cbGestorProg.DataSource = UtilizadoresController.ObterGestores();
-            cbGestorProg.DisplayMember = "nome"; // Ajuste para o campo que você quiser mostrar
         }
 
         private void btGravarProg_Click(object sender, EventArgs e)
@@ -119,30 +167,70 @@ namespace iTasks
                 return;
             }
 
-            // Criação do objeto Programador com os dados do formulário
-            var programador = new Programador
+            int index = lstListaProgramadores.SelectedIndex;
+            if (index >= 0)
             {
-                nome = txtNomeProg.Text,
-                username = txtUsernameProg.Text,
-                password = txtPasswordProg.Text,
-                NivelExperiencia = (NivelExperiencia)cbNivelProg.SelectedItem,
-                gestor = (Gestor)cbGestorProg.SelectedItem
-            };
-
-            // Indica se o programador foi adicionado com sucesso
-            bool verificaProg = UtilizadoresController.AdicionarProgramador(programador);
-            if (verificaProg == true)
-            {
-                MessageBox.Show("Programador criado com sucesso");
-                // Obtém a lista de programadores da base de dados e popula a ListBox
-                List<Utilizador> programadores = UtilizadoresController.ObterProgramadores();
-                lstListaProgramadores.DataSource = programadores;
-                return;
+                utilizadorSelecionado = lstListaProgramadores.Items[index] as Programador;
             }
             else
             {
-                MessageBox.Show("Erro! Não foi possível criar o programador");
-                return;
+                utilizadorSelecionado = null;
+            }
+
+            if (utilizadorSelecionado == null)
+            {
+
+                // Criação do objeto Programador com os dados do formulário
+                var programador = new Programador
+                {
+                    nome = txtNomeProg.Text,
+                    username = txtUsernameProg.Text,
+                    password = txtPasswordProg.Text,
+                    NivelExperiencia = (NivelExperiencia)cbNivelProg.SelectedItem,
+                    gestor = (Gestor)cbGestorProg.SelectedItem
+                };
+
+                // Indica se o programador foi adicionado com sucesso
+                bool verificaProg = UtilizadoresController.AdicionarProgramador(programador);
+                if (verificaProg == true)
+                {
+                    MessageBox.Show("Programador criado com sucesso");
+                    // Obtém a lista de programadores da base de dados e popula a ListBox
+                    List<Utilizador> programadores = UtilizadoresController.ObterProgramadores();
+                    lstListaProgramadores.DataSource = null;
+                    lstListaProgramadores.DataSource = programadores;
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show("Erro! Não foi possível criar o programador");
+                    return;
+                }
+            }
+            else
+            {
+                utilizadorSelecionado.nome = txtNomeProg.Text;
+                utilizadorSelecionado.username = txtUsernameProg.Text;
+                utilizadorSelecionado.password = txtPasswordProg.Text;
+                utilizadorSelecionado.NivelExperiencia = (NivelExperiencia)cbNivelProg.SelectedItem;
+                utilizadorSelecionado.gestor = (Gestor)cbGestorProg.SelectedItem;
+
+                bool utilizadorAtualizado = UtilizadoresController.AtualizarProgramador(utilizadorSelecionado);
+
+                // Verifica se o programador foi atualizado com sucesso
+                if (utilizadorAtualizado)
+                {
+                    MessageBox.Show("Programador atualizado com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    List<Utilizador> programadores = UtilizadoresController.ObterProgramadores();
+                    lstListaProgramadores.DataSource = null;
+                    lstListaProgramadores.DataSource = programadores;
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show("Erro! Não foi possível atualizar o programador", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
             }
         }
 
@@ -150,7 +238,7 @@ namespace iTasks
         // Carrega e mostra os dados iniciais de gestores e programadores nas listas e na ComboBox ao abrir o formulário
         {
             //Carregar as listas de gestores e programadores ao iniciar o formulário
-            List<Utilizador> programadores= UtilizadoresController.ObterProgramadores(); //obter a lista de tipos de tarefas da base de dados
+            List<Utilizador> programadores = UtilizadoresController.ObterProgramadores(); //obter a lista de tipos de tarefas da base de dados
             lstListaProgramadores.DataSource = programadores;
 
             List<Utilizador> gestores = UtilizadoresController.ObterGestores(); //obter a lista de tipos de tarefas da base de dados
@@ -163,6 +251,7 @@ namespace iTasks
             //Define o índice selecionado da lista como -1 para garantir que nenhum item esteja selecionado ao iniciar o programa
             lstListaGestores.SelectedIndex = -1;
             lstListaProgramadores.SelectedIndex = -1;
+
         }
         private void LimparCamposGestor()
         {

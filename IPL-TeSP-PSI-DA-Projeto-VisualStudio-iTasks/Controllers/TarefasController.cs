@@ -29,11 +29,12 @@ namespace iTasks.Controllers
 
         public static List<Tarefa> ObterTarefasEmCurso(Utilizador utilizador)
         {
-            // Aqui vamos buscar as tarefas em curso
+            // Aqui vamos buscar as tarefas em curso e ToDo
             using (var db = new iTasksContext())
             {
                 return db.Tarefas.Include("Gestor").Include("Programador").Include("TipoTarefa").Where(tarefa => 
                 tarefa.estadoAtual == EstadoTarefa.Doing &&
+                tarefa.estadoAtual == EstadoTarefa.ToDo &&
                 tarefa.gestor.id == utilizador.id).ToList();
             }
         }
@@ -64,6 +65,9 @@ namespace iTasks.Controllers
             using (var db = new iTasksContext())
             {
                 return db.Tarefas
+                    .Include("Gestor")
+                    .Include("Programador")
+                    .Include("TipoTarefa")
                     .Where(tarefa => 
                     tarefa.estadoAtual == EstadoTarefa.Done &&
                     tarefa.programador.id == utilizador.id)
