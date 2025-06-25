@@ -122,9 +122,9 @@ namespace iTasks
             }
             else
             {
-                utilizadorSelecionado2.nome = txtNomeProg.Text;
-                utilizadorSelecionado2.username = txtUsernameProg.Text;
-                utilizadorSelecionado2.password = txtPasswordProg.Text;
+                utilizadorSelecionado2.nome = txtNomeGestor.Text;
+                utilizadorSelecionado2.username = txtUsernameGestor.Text;
+                utilizadorSelecionado2.password = txtPasswordGestor.Text;
                 utilizadorSelecionado2.departamento = (Departamento)cbDepartamento.SelectedItem;
                 utilizadorSelecionado2.GereUtilizadores= chkGereUtilizadores.Checked;
 
