@@ -125,15 +125,15 @@ namespace iTasks
                 utilizadorSelecionado2.nome = txtNomeProg.Text;
                 utilizadorSelecionado2.username = txtUsernameProg.Text;
                 utilizadorSelecionado2.password = txtPasswordProg.Text;
-                utilizadorSelecionado2.NivelExperiencia = (NivelExperiencia)cbNivelProg.SelectedItem;
-                utilizadorSelecionado2.gestor = (Gestor)cbGestorProg.SelectedItem;
+                utilizadorSelecionado2.departamento = (Departamento)cbDepartamento.SelectedItem;
+                utilizadorSelecionado2.GereUtilizadores= chkGereUtilizadores.Checked;
 
-                bool utilizadorAtualizado = UtilizadoresController.AtualizarProgramador(utilizadorSelecionado2);
+                bool utilizadorAtualizado = UtilizadoresController.AtualizarGestor(utilizadorSelecionado2);
 
-                // Verifica se o programador foi atualizado com sucesso
+                // Verifica se o gestor foi atualizado com sucesso
                 if (utilizadorAtualizado)
                 {
-                    MessageBox.Show("Programador atualizado com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Gestor atualizado com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     List<Utilizador> gestores = UtilizadoresController.ObterGestores();
                     lstListaGestores.DataSource = null;
                     lstListaGestores.DataSource = gestores;
@@ -141,7 +141,7 @@ namespace iTasks
                 }
                 else
                 {
-                    MessageBox.Show("Erro! Não foi possível atualizar o programador", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Erro! Não foi possível atualizar o gestor", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }
